@@ -5,20 +5,31 @@
 {% block content %}
 <div class="w-full max-w-md mx-auto space-y-6">
     
+    <!-- Selector de Idioma -->
+    <div class="flex justify-center gap-3 mb-4">
+        <a href="{{ url_for('main.set_lang', lang='es') }}" 
+           class="px-4 py-2 rounded-lg font-semibold transition-all duration-200 {% if current_language == 'es' %}bg-amber-900 text-white shadow-md{% else %}bg-white text-amber-900 border-2 border-amber-900 hover:bg-amber-50{% endif %}">
+            Español
+        </a>
+        <a href="{{ url_for('main.set_lang', lang='en') }}" 
+           class="px-4 py-2 rounded-lg font-semibold transition-all duration-200 {% if current_language == 'en' %}bg-amber-900 text-white shadow-md{% else %}bg-white text-amber-900 border-2 border-amber-900 hover:bg-amber-50{% endif %}">
+            English
+        </a>
+    </div>
+    
     <!-- Hero Section - Mensaje de Misión -->
     <section class="bg-gradient-to-br from-amber-900 to-amber-800 rounded-2xl shadow-xl p-6 sm:p-8 text-white">
         <div class="text-center space-y-4">
             <h1 class="text-2xl sm:text-3xl font-bold leading-tight">
-                Transformando vidas a través del café y la educación
+                {{ translate('hero_title') }}
             </h1>
             <p class="text-base sm:text-lg text-amber-100 leading-relaxed">
-                Somos una fundación comprometida con el desarrollo comunitario, 
-                la educación bilingüe y el empoderamiento de comunidades cafetaleras.
+                {{ translate('hero_description') }}
             </p>
             <div class="pt-4">
                 <a href="{{ url_for('donations.donations') }}" 
                    class="inline-block bg-white text-amber-900 font-bold text-lg px-8 py-4 rounded-lg shadow-lg hover:bg-amber-50 active:bg-amber-100 focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50 transition-all duration-200 transform hover:scale-105">
-                    Donar ahora
+                    {{ translate('donate_button') }}
                 </a>
             </div>
         </div>
@@ -35,19 +46,18 @@
                 </div>
             </div>
             <div class="flex-1">
-                <h2 class="text-xl font-bold text-amber-900 mb-2">Impacto Social</h2>
+                <h2 class="text-xl font-bold text-amber-900 mb-2">{{ translate('impact_title') }}</h2>
                 <p class="text-gray-700 mb-4 leading-relaxed text-sm">
-                    Hemos apoyado a más de <strong class="text-amber-900">500 familias</strong> en comunidades cafetaleras, 
-                    proporcionando recursos educativos y oportunidades de desarrollo económico sostenible.
+                    {{ translate('impact_description', count=500) }}
                 </p>
                 <div class="grid grid-cols-2 gap-3">
                     <div class="bg-amber-50 rounded-lg p-3 text-center">
                         <div class="text-xl font-bold text-amber-900">500+</div>
-                        <div class="text-xs text-gray-600">Familias</div>
+                        <div class="text-xs text-gray-600">{{ translate('families') }}</div>
                     </div>
                     <div class="bg-amber-50 rounded-lg p-3 text-center">
                         <div class="text-xl font-bold text-amber-900">15</div>
-                        <div class="text-xs text-gray-600">Comunidades</div>
+                        <div class="text-xs text-gray-600">{{ translate('communities') }}</div>
                     </div>
                 </div>
             </div>
@@ -65,14 +75,13 @@
                 </div>
             </div>
             <div class="flex-1">
-                <h2 class="text-xl font-bold text-amber-900 mb-2">Productos con Valor Social</h2>
+                <h2 class="text-xl font-bold text-amber-900 mb-2">{{ translate('products_title') }}</h2>
                 <p class="text-gray-700 mb-4 leading-relaxed text-sm">
-                    Cada producto que compras apoya directamente a las comunidades cafetaleras. 
-                    Desde café de origen hasta artesanías locales.
+                    {{ translate('products_description') }}
                 </p>
                 <a href="{{ url_for('store.store') }}" 
                    class="inline-block text-amber-900 font-semibold hover:text-amber-800 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 rounded px-4 py-2 transition-colors text-sm">
-                    Ver productos →
+                    {{ translate('view_products') }}
                 </a>
             </div>
         </div>
@@ -89,14 +98,13 @@
                 </div>
             </div>
             <div class="flex-1">
-                <h2 class="text-xl font-bold text-amber-900 mb-2">Educación Bilingüe</h2>
+                <h2 class="text-xl font-bold text-amber-900 mb-2">{{ translate('education_title') }}</h2>
                 <p class="text-gray-700 mb-4 leading-relaxed text-sm">
-                    Programas de educación bilingüe gratuitos para niños y adultos en comunidades cafetaleras. 
-                    Fortalecemos tanto el español como las lenguas indígenas locales.
+                    {{ translate('education_description') }}
                 </p>
                 <a href="{{ url_for('learn.learn') }}" 
                    class="inline-block text-amber-900 font-semibold hover:text-amber-800 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 rounded px-4 py-2 transition-colors text-sm">
-                    Explorar lecciones →
+                    {{ translate('explore_lessons') }}
                 </a>
             </div>
         </div>
@@ -113,14 +121,13 @@
                 </div>
             </div>
             <div class="flex-1">
-                <h2 class="text-xl font-bold text-amber-900 mb-2">Podcast</h2>
+                <h2 class="text-xl font-bold text-amber-900 mb-2">{{ translate('podcast_title') }}</h2>
                 <p class="text-gray-700 mb-4 leading-relaxed text-sm">
-                    Escucha historias inspiradoras de las comunidades que apoyamos, conversaciones sobre 
-                    sostenibilidad, cultura cafetalera y el impacto de la educación bilingüe.
+                    {{ translate('podcast_description') }}
                 </p>
                 <a href="{{ url_for('podcast.podcast') }}" 
                    class="inline-block text-amber-900 font-semibold hover:text-amber-800 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 rounded px-4 py-2 transition-colors text-sm">
-                    Escuchar podcast →
+                    {{ translate('listen_podcast') }}
                 </a>
             </div>
         </div>
@@ -129,15 +136,14 @@
     <!-- Call to Action Final -->
     <section class="bg-amber-50 rounded-xl p-6 text-center border-2 border-amber-200">
         <h2 class="text-xl font-bold text-amber-900 mb-3">
-            ¿Listo para hacer la diferencia?
+            {{ translate('cta_title') }}
         </h2>
         <p class="text-gray-700 mb-6 text-sm">
-            Tu apoyo puede transformar vidas. Cada donación, cada compra, cada lección aprendida 
-            nos acerca más a un futuro mejor.
+            {{ translate('cta_description') }}
         </p>
         <a href="{{ url_for('donations.donations') }}" 
            class="inline-block bg-amber-900 text-white font-bold px-6 py-3 rounded-lg shadow-md hover:bg-amber-800 active:bg-amber-950 focus:outline-none focus:ring-4 focus:ring-amber-300 transition-all duration-200 w-full sm:w-auto">
-            Donar ahora
+            {{ translate('donate_now') }}
         </a>
     </section>
 

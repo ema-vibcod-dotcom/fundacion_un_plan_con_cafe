@@ -1,6 +1,7 @@
-from flask import Flask
+from flask import Flask, g
 from config import Config
 from app.models import db
+from app.translations import translate, get_language
 
 def create_app(config_class=Config):
     """App factory para crear instancias de Flask"""
@@ -13,6 +14,12 @@ def create_app(config_class=Config):
     # Crear tablas de base de datos
     with app.app_context():
         db.create_all()
+    
+    # Contexto de template para traducciones
+    @app.context_processor
+    def inject_translations():
+        """Inyecta la función translate en todos los templates"""
+        return dict(translate=translate, current_language=get_language())
     
     # Registrar blueprints
     from app.routes.main import bp as main_bp
