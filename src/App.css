@@ -1,0 +1,48 @@
+/* Safe area para dispositivos con notch */
+.safe-area-inset-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Mejoras de accesibilidad para focus visible */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Asegurar que el contenido no quede oculto por la navegación */
+@media (max-width: 640px) {
+  main {
+    padding-bottom: 5rem;
+  }
+}
+
+/* Mejorar la apariencia del reproductor de audio en móviles */
+audio {
+  width: 100%;
+  max-width: 100%;
+}
+
+audio::-webkit-media-controls-panel {
+  background-color: #FEF3C7; /* amber-100 */
+}
+
+audio::-webkit-media-controls-play-button {
+  background-color: #92400E; /* amber-900 */
+  border-radius: 50%;
+}
+
+audio::-webkit-media-controls-current-time-display,
+audio::-webkit-media-controls-time-remaining-display {
+  color: #92400E; /* amber-900 */
+  font-weight: 600;
+}
+
+/* Asegurar que el reproductor sea táctil en móviles */
+@media (max-width: 640px) {
+  audio {
+    height: 48px; /* Tamaño mínimo táctil */
+  }
+}
