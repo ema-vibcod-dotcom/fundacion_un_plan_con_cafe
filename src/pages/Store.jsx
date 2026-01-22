@@ -1,27 +1,28 @@
 import { products } from '../data/products';
+import { useLanguage } from '../contexts/LanguageContext';
 
-function handlePurchase(productId, productName, price) {
+function handlePurchase(productId, productName, price, translate) {
   const message =
-    `¡Gracias por tu interés en "${productName}"!\n\n` +
-    `Precio: $${price.toFixed(2)} USD\n\n` +
-    `Esta es una simulación. El sistema de compras real estará disponible próximamente.`;
+    `${translate('store_purchase_thanks', { productName })} "${productName}"!\n\n` +
+    `${translate('store_purchase_price')}: $${price.toFixed(2)} USD\n\n` +
+    translate('store_purchase_simulation');
 
   alert(message);
   console.log('Compra simulada:', { productId, productName, price });
 }
 
 export default function Store() {
+  const { translate } = useLanguage();
   const activeProducts = products.filter(p => p.active);
 
   return (
     <div className="w-full max-w-6xl mx-auto space-y-6">
       <div className="text-center">
         <h1 className="text-2xl sm:text-3xl font-bold text-amber-900 mb-2">
-          Tienda con Valor Social
+          {translate('store_title')}
         </h1>
         <p className="text-gray-700 max-w-2xl mx-auto text-sm">
-          Cada producto que compras apoya directamente a las comunidades cafetaleras y nuestros
-          proyectos de desarrollo comunitario.
+          {translate('store_subtitle')}
         </p>
       </div>
 
@@ -85,10 +86,10 @@ export default function Store() {
 
                   <button
                     type="button"
-                    onClick={() => handlePurchase(product.id, product.name, product.price_usd)}
+                    onClick={() => handlePurchase(product.id, product.name, product.price_usd, translate)}
                     className="w-full bg-amber-900 text-white font-semibold px-4 py-3 rounded-lg hover:bg-amber-800 active:bg-amber-950 focus:outline-none focus:ring-4 focus:ring-amber-300 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]"
                   >
-                    Comprar
+                    {translate('buy_button')}
                   </button>
                 </div>
               </div>
@@ -111,9 +112,9 @@ export default function Store() {
               d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
             />
           </svg>
-          <h2 className="text-xl font-bold text-gray-900 mb-2">No hay productos disponibles</h2>
+          <h2 className="text-xl font-bold text-gray-900 mb-2">{translate('no_products_title')}</h2>
           <p className="text-gray-600 text-sm">
-            Estamos trabajando en agregar nuevos productos. ¡Vuelve pronto!
+            {translate('no_products_text')}
           </p>
         </div>
       )}
@@ -133,11 +134,9 @@ export default function Store() {
             />
           </svg>
           <div className="text-sm text-amber-900">
-            <p className="font-semibold mb-1">Sobre nuestras compras</p>
+            <p className="font-semibold mb-1">{translate('store_info_title')}</p>
             <p className="text-amber-800 text-xs">
-              Esta es una simulación de compra. No se procesarán pagos reales. Todos los precios
-              están en dólares estadounidenses (USD). Cada compra simbólica representa tu apoyo a
-              nuestra causa.
+              {translate('store_info')}
             </p>
           </div>
         </div>

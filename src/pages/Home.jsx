@@ -1,13 +1,11 @@
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
-import LanguageSelector from '../components/LanguageSelector';
 
 export default function Home() {
   const { translate } = useLanguage();
 
   return (
     <div className="w-full max-w-md mx-auto space-y-6">
-      <LanguageSelector />
 
       <section className="bg-gradient-to-br from-amber-900 to-amber-800 rounded-2xl shadow-xl p-6 sm:p-8 text-white">
         <div className="text-center space-y-4">

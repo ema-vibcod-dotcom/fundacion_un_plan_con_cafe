@@ -1,6 +1,8 @@
 import { podcastEpisodes, formatDate } from '../data/podcastEpisodes';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export default function Podcast() {
+  const { translate } = useLanguage();
   const sortedEpisodes = [...podcastEpisodes].sort(
     (a, b) => new Date(b.created_at) - new Date(a.created_at)
   );
@@ -9,10 +11,9 @@ export default function Podcast() {
     <div className="w-full max-w-3xl mx-auto space-y-6">
       {/* Header */}
       <div className="text-center">
-        <h1 className="text-2xl sm:text-3xl font-bold text-amber-900 mb-3">Podcast</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold text-amber-900 mb-3">{translate('podcast_title')}</h1>
         <p className="text-gray-700 max-w-2xl mx-auto leading-relaxed text-sm">
-          Escucha historias inspiradoras de las comunidades que apoyamos, conversaciones sobre
-          sostenibilidad, cultura cafetalera y el impacto de la educación bilingüe.
+          {translate('podcast_subtitle')}
         </p>
       </div>
 
@@ -103,9 +104,9 @@ export default function Podcast() {
                           d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
                         />
                       </svg>
-                      Descargar episodio
+                      {translate('download_episode')}
                     </a>
-                    <span className="text-xs text-gray-500">Episodio #{episode.id}</span>
+                    <span className="text-xs text-gray-500">{translate('episode_number')}{episode.id}</span>
                   </div>
                 </div>
               </div>
@@ -130,23 +131,20 @@ export default function Podcast() {
             />
           </svg>
           <h2 className="text-xl font-bold text-gray-900 mb-2">
-            No hay episodios disponibles
+            {translate('no_episodes_title')}
           </h2>
           <p className="text-gray-600 text-sm">
-            Estamos trabajando en nuevos episodios. ¡Vuelve pronto para escuchar nuestras
-            historias!
+            {translate('no_episodes_text')}
           </p>
         </div>
       )}
 
       {/* Información sobre el podcast */}
       <div className="bg-amber-50 rounded-xl p-6 sm:p-8 border-l-4 border-amber-500">
-        <h3 className="text-lg font-bold text-amber-900 mb-3">Sobre nuestro podcast</h3>
+        <h3 className="text-lg font-bold text-amber-900 mb-3">{translate('about_podcast_title')}</h3>
         <div className="space-y-3 text-gray-700 text-sm leading-relaxed">
           <p>
-            En nuestro podcast compartimos historias reales de las comunidades cafetaleras que
-            apoyamos, conversaciones sobre desarrollo sostenible, educación bilingüe y el impacto
-            positivo que generamos juntos.
+            {translate('about_podcast')}
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
             <div className="flex items-start space-x-3">
@@ -165,8 +163,8 @@ export default function Podcast() {
                 />
               </svg>
               <div>
-                <p className="font-semibold text-amber-900">Episodios regulares</p>
-                <p className="text-xs text-gray-600">Nuevos episodios cada semana</p>
+                <p className="font-semibold text-amber-900">{translate('podcast_regular')}</p>
+                <p className="text-xs text-gray-600">{translate('podcast_regular_desc')}</p>
               </div>
             </div>
             <div className="flex items-start space-x-3">
@@ -185,8 +183,8 @@ export default function Podcast() {
                 />
               </svg>
               <div>
-                <p className="font-semibold text-amber-900">Duración variable</p>
-                <p className="text-xs text-gray-600">15-45 minutos por episodio</p>
+                <p className="font-semibold text-amber-900">{translate('podcast_duration')}</p>
+                <p className="text-xs text-gray-600">{translate('podcast_duration_desc')}</p>
               </div>
             </div>
             <div className="flex items-start space-x-3">
@@ -205,8 +203,8 @@ export default function Podcast() {
                 />
               </svg>
               <div>
-                <p className="font-semibold text-amber-900">Historias reales</p>
-                <p className="text-xs text-gray-600">Testimonios de comunidades</p>
+                <p className="font-semibold text-amber-900">{translate('podcast_stories')}</p>
+                <p className="text-xs text-gray-600">{translate('podcast_stories_desc')}</p>
               </div>
             </div>
             <div className="flex items-start space-x-3">
@@ -225,8 +223,8 @@ export default function Podcast() {
                 />
               </svg>
               <div>
-                <p className="font-semibold text-amber-900">Gratis y accesible</p>
-                <p className="text-xs text-gray-600">Escucha cuando quieras</p>
+                <p className="font-semibold text-amber-900">{translate('podcast_free')}</p>
+                <p className="text-xs text-gray-600">{translate('podcast_free_desc')}</p>
               </div>
             </div>
           </div>

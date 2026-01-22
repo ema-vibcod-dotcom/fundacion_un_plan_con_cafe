@@ -4,26 +4,28 @@ export default function LanguageSelector() {
   const { language, changeLanguage } = useLanguage();
 
   return (
-    <div className="flex justify-center gap-3 mb-4">
+    <div className="flex gap-2">
       <button
         onClick={() => changeLanguage('es')}
-        className={`px-4 py-2 rounded-lg font-semibold transition-all duration-200 ${
+        className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg font-semibold text-xs sm:text-sm transition-all duration-200 ${
           language === 'es'
-            ? 'bg-amber-900 text-white shadow-md'
-            : 'bg-white text-amber-900 border-2 border-amber-900 hover:bg-amber-50'
+            ? 'bg-white text-amber-900 shadow-md'
+            : 'bg-amber-800 text-white border-2 border-white hover:bg-amber-700'
         }`}
+        aria-label="Cambiar a Español"
       >
-        Español
+        ES
       </button>
       <button
         onClick={() => changeLanguage('en')}
-        className={`px-4 py-2 rounded-lg font-semibold transition-all duration-200 ${
+        className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg font-semibold text-xs sm:text-sm transition-all duration-200 ${
           language === 'en'
-            ? 'bg-amber-900 text-white shadow-md'
-            : 'bg-white text-amber-900 border-2 border-amber-900 hover:bg-amber-50'
+            ? 'bg-white text-amber-900 shadow-md'
+            : 'bg-amber-800 text-white border-2 border-white hover:bg-amber-700'
         }`}
+        aria-label="Change to English"
       >
-        English
+        EN
       </button>
     </div>
   );

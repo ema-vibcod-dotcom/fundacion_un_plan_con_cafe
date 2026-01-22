@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import FlashMessage from '../components/FlashMessage';
 import { saveDonation } from '../services/donationService';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export default function Donations() {
+  const { translate, language } = useLanguage();
   const [formData, setFormData] = useState({
     name: '',
     amount: ''
@@ -26,13 +28,13 @@ export default function Donations() {
     const errors = [];
 
     if (!formData.amount) {
-      errors.push('Por favor ingresa un monto.');
+      errors.push(translate('error_amount_required'));
     } else {
       const amount = parseFloat(formData.amount);
       if (isNaN(amount) || amount <= 0) {
-        errors.push('El monto debe ser mayor a cero.');
+        errors.push(translate('error_amount_zero'));
       } else if (amount < 1) {
-        errors.push('El monto mínimo es $1.00 USD.');
+        errors.push(translate('error_amount_minimum'));
       }
     }
 
@@ -53,10 +55,12 @@ export default function Donations() {
     setIsSubmitting(true);
 
     try {
+      const anonymousName = language === 'es' ? 'Anónimo' : 'Anonymous';
+      
       const result = await saveDonation({
-        name: formData.name.trim() || 'Anónimo',
+        name: formData.name.trim() || anonymousName,
         amount_usd: parseFloat(formData.amount)
-      });
+      }, translate);
 
       if (result.success) {
         setFlashMessage(result.message);
@@ -67,7 +71,7 @@ export default function Donations() {
         });
       }
     } catch (error) {
-      setFlashMessage('Ocurrió un error al procesar tu donación. Por favor intenta nuevamente.');
+      setFlashMessage(translate('error_donation_processing'));
       setFlashType('error');
     } finally {
       setIsSubmitting(false);
@@ -78,11 +82,10 @@ export default function Donations() {
     <div className="w-full max-w-md mx-auto space-y-6">
       <div className="text-center">
         <h1 className="text-2xl sm:text-3xl font-bold text-amber-900 mb-2">
-          Haz tu Donación
+          {translate('donations_title')}
         </h1>
         <p className="text-gray-700 text-sm">
-          Tu apoyo es fundamental para continuar con nuestros proyectos de desarrollo
-          comunitario y educación bilingüe.
+          {translate('donations_subtitle')}
         </p>
       </div>
 
@@ -97,7 +100,7 @@ export default function Donations() {
       <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-md p-6 space-y-5">
         <div>
           <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
-            Nombre <span className="text-gray-500 text-xs">(opcional)</span>
+            {translate('name_label')} <span className="text-gray-500 text-xs">({translate('name_optional')})</span>
           </label>
           <input
             type="text"
@@ -107,16 +110,16 @@ export default function Donations() {
             onChange={handleChange}
             maxLength="100"
             className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors text-base"
-            placeholder="Ingresa tu nombre (opcional, dejar vacío para donación anónima)"
+            placeholder={translate('name_placeholder')}
           />
           <p className="mt-1 text-xs text-gray-500">
-            Si no ingresas un nombre, la donación será registrada como anónima.
+            {translate('name_hint')}
           </p>
         </div>
 
         <div>
           <label htmlFor="amount" className="block text-sm font-semibold text-gray-700 mb-2">
-            Monto de donación <span className="text-red-500">*</span>
+            {translate('amount_label')} <span className="text-red-500">*</span>
           </label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -140,8 +143,7 @@ export default function Donations() {
             </div>
           </div>
           <p className="mt-2 text-xs text-gray-600">
-            <span className="font-semibold">Nota:</span> Los pagos están en dólares estadounidenses
-            (USD). Monto mínimo: $1.00 USD
+            <span className="font-semibold">{translate('amount_note')}</span> {translate('amount_info')}
           </p>
         </div>
 
@@ -160,10 +162,9 @@ export default function Donations() {
               />
             </svg>
             <div className="text-sm text-amber-900">
-              <p className="font-semibold mb-1">Información importante</p>
+              <p className="font-semibold mb-1">{translate('important_info')}</p>
               <p className="text-amber-800 text-xs">
-                Esta es una simulación de donación. No se procesarán pagos reales. 
-                Puedes donar de forma anónima dejando el campo de nombre vacío.
+                {translate('donation_info')}
               </p>
             </div>
           </div>
@@ -174,17 +175,17 @@ export default function Donations() {
           disabled={isSubmitting}
           className="w-full bg-amber-900 text-white font-bold text-lg px-6 py-4 rounded-lg shadow-lg hover:bg-amber-800 active:bg-amber-950 focus:outline-none focus:ring-4 focus:ring-amber-300 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isSubmitting ? 'Procesando...' : 'Donar'}
+          {isSubmitting ? translate('processing') : translate('donate_button_text')}
         </button>
 
         <p className="text-xs text-center text-gray-500">
-          Al hacer clic en "Donar", confirmas que la información proporcionada es correcta.
+          {translate('donation_confirm')}
         </p>
       </form>
 
       <div className="bg-white rounded-xl shadow-md p-6">
         <h2 className="text-lg font-bold text-amber-900 mb-3">
-          ¿Cómo se utilizan las donaciones?
+          {translate('donations_usage_title')}
         </h2>
         <ul className="space-y-2 text-sm text-gray-700">
           <li className="flex items-start">
@@ -200,7 +201,7 @@ export default function Donations() {
                 clipRule="evenodd"
               />
             </svg>
-            <span>Programas de educación bilingüe para comunidades cafetaleras</span>
+            <span>{translate('usage_1')}</span>
           </li>
           <li className="flex items-start">
             <svg
@@ -215,7 +216,7 @@ export default function Donations() {
                 clipRule="evenodd"
               />
             </svg>
-            <span>Recursos educativos y materiales de aprendizaje</span>
+            <span>{translate('usage_2')}</span>
           </li>
           <li className="flex items-start">
             <svg
@@ -230,7 +231,7 @@ export default function Donations() {
                 clipRule="evenodd"
               />
             </svg>
-            <span>Apoyo a proyectos de desarrollo comunitario sostenible</span>
+            <span>{translate('usage_3')}</span>
           </li>
           <li className="flex items-start">
             <svg
@@ -245,7 +246,7 @@ export default function Donations() {
                 clipRule="evenodd"
               />
             </svg>
-            <span>Iniciativas de salud y bienestar en comunidades rurales</span>
+            <span>{translate('usage_4')}</span>
           </li>
         </ul>
       </div>

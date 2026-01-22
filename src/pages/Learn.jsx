@@ -1,6 +1,8 @@
 import { getLessonsByLevel } from '../data/lessons';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export default function Learn() {
+  const { translate } = useLanguage();
   const lessonsByLevel = getLessonsByLevel();
   const totalLessons =
     lessonsByLevel.beginner.length +
@@ -11,11 +13,10 @@ export default function Learn() {
     <div className="w-full max-w-4xl mx-auto space-y-8">
       <div className="text-center">
         <h1 className="text-2xl sm:text-3xl font-bold text-amber-900 mb-3">
-          Educación Bilingüe
+          {translate('learn_title')}
         </h1>
         <p className="text-gray-700 max-w-2xl mx-auto leading-relaxed text-sm">
-          Accede a nuestras lecciones gratuitas diseñadas para fortalecer el bilingüismo en
-          comunidades cafetaleras. Aprende español y lenguas indígenas de manera interactiva.
+          {translate('learn_subtitle')}
         </p>
       </div>
 
@@ -26,12 +27,12 @@ export default function Learn() {
               <div className="text-2xl sm:text-3xl font-bold text-amber-900">
                 {totalLessons}
               </div>
-              <div className="text-xs text-gray-700">Lecciones disponibles</div>
+              <div className="text-xs text-gray-700">{translate('lessons_available')}</div>
             </div>
             <div className="hidden sm:block w-px h-12 bg-amber-300"></div>
             <div className="text-center">
               <div className="text-2xl sm:text-3xl font-bold text-amber-900">3</div>
-              <div className="text-xs text-gray-700">Niveles</div>
+              <div className="text-xs text-gray-700">{translate('levels')}</div>
             </div>
           </div>
         </div>
@@ -40,9 +41,9 @@ export default function Learn() {
       <section className="space-y-4">
         <div className="flex items-center space-x-3">
           <div className="w-1 h-8 bg-green-500 rounded-full"></div>
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Nivel Básico</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">{translate('level_beginner')}</h2>
           <span className="px-3 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full">
-            Principiante
+            {translate('beginner_badge')}
           </span>
         </div>
 
@@ -61,7 +62,7 @@ export default function Learn() {
                     {lesson.description}
                   </p>
                 ) : (
-                  <p className="text-gray-500 text-sm italic mb-3">Lección de nivel básico</p>
+                  <p className="text-gray-500 text-sm italic mb-3">{translate('beginner_level')}</p>
                 )}
                 <div className="flex items-center text-xs text-gray-600">
                   <svg
@@ -78,7 +79,7 @@ export default function Learn() {
                       d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
                     />
                   </svg>
-                  <span>Nivel básico</span>
+                  <span>{translate('beginner_level')}</span>
                 </div>
               </div>
             ))}
@@ -100,7 +101,7 @@ export default function Learn() {
               />
             </svg>
             <p className="text-gray-600 text-sm">
-              No hay lecciones de nivel básico disponibles aún.
+              {translate('no_lessons_beginner')}
             </p>
           </div>
         )}
@@ -109,9 +110,9 @@ export default function Learn() {
       <section className="space-y-4">
         <div className="flex items-center space-x-3">
           <div className="w-1 h-8 bg-blue-500 rounded-full"></div>
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Nivel Intermedio</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">{translate('level_intermediate')}</h2>
           <span className="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded-full">
-            Intermedio
+            {translate('intermediate_badge')}
           </span>
         </div>
 
@@ -130,7 +131,7 @@ export default function Learn() {
                     {lesson.description}
                   </p>
                 ) : (
-                  <p className="text-gray-500 text-sm italic mb-3">Lección de nivel intermedio</p>
+                  <p className="text-gray-500 text-sm italic mb-3">{translate('intermediate_level')}</p>
                 )}
                 <div className="flex items-center text-xs text-gray-600">
                   <svg
@@ -147,7 +148,7 @@ export default function Learn() {
                       d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
                     />
                   </svg>
-                  <span>Nivel intermedio</span>
+                  <span>{translate('intermediate_level')}</span>
                 </div>
               </div>
             ))}
@@ -155,7 +156,7 @@ export default function Learn() {
         ) : (
           <div className="bg-gray-50 rounded-lg p-6 text-center border-2 border-dashed border-gray-300">
             <p className="text-gray-600 text-sm">
-              No hay lecciones de nivel intermedio disponibles aún.
+              {translate('no_lessons_intermediate')}
             </p>
           </div>
         )}
@@ -164,9 +165,9 @@ export default function Learn() {
       <section className="space-y-4">
         <div className="flex items-center space-x-3">
           <div className="w-1 h-8 bg-purple-500 rounded-full"></div>
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Nivel Avanzado</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">{translate('level_advanced')}</h2>
           <span className="px-3 py-1 bg-purple-100 text-purple-800 text-xs font-semibold rounded-full">
-            Avanzado
+            {translate('advanced_badge')}
           </span>
         </div>
 
@@ -185,7 +186,7 @@ export default function Learn() {
                     {lesson.description}
                   </p>
                 ) : (
-                  <p className="text-gray-500 text-sm italic mb-3">Lección de nivel avanzado</p>
+                  <p className="text-gray-500 text-sm italic mb-3">{translate('advanced_level')}</p>
                 )}
                 <div className="flex items-center text-xs text-gray-600">
                   <svg
@@ -202,7 +203,7 @@ export default function Learn() {
                       d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
                     />
                   </svg>
-                  <span>Nivel avanzado</span>
+                  <span>{translate('advanced_level')}</span>
                 </div>
               </div>
             ))}
@@ -210,7 +211,7 @@ export default function Learn() {
         ) : (
           <div className="bg-gray-50 rounded-lg p-6 text-center border-2 border-dashed border-gray-300">
             <p className="text-gray-600 text-sm">
-              No hay lecciones de nivel avanzado disponibles aún.
+              {translate('no_lessons_advanced')}
             </p>
           </div>
         )}
@@ -218,13 +219,11 @@ export default function Learn() {
 
       <div className="bg-white rounded-xl shadow-md p-6 sm:p-8 border-t-4 border-amber-500">
         <h3 className="text-lg font-bold text-amber-900 mb-3">
-          Sobre nuestro programa educativo
+          {translate('program_title')}
         </h3>
         <div className="space-y-3 text-gray-700 text-sm leading-relaxed">
           <p>
-            Nuestro programa de educación bilingüe está diseñado para fortalecer tanto el español
-            como las lenguas indígenas en comunidades cafetaleras. Cada lección está cuidadosamente
-            estructurada para ser accesible y práctica.
+            {translate('program_description')}
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
             <div className="text-center p-3 bg-amber-50 rounded-lg">
@@ -242,8 +241,8 @@ export default function Learn() {
                   d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
                 />
               </svg>
-              <p className="font-semibold text-amber-900">100% Gratuito</p>
-              <p className="text-xs text-gray-600">Acceso libre a todas las lecciones</p>
+              <p className="font-semibold text-amber-900">{translate('program_free')}</p>
+              <p className="text-xs text-gray-600">{translate('program_free_desc')}</p>
             </div>
             <div className="text-center p-3 bg-amber-50 rounded-lg">
               <svg
@@ -260,8 +259,8 @@ export default function Learn() {
                   d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
                 />
               </svg>
-              <p className="font-semibold text-amber-900">Comunidad</p>
-              <p className="text-xs text-gray-600">Aprende junto a otros</p>
+              <p className="font-semibold text-amber-900">{translate('program_community')}</p>
+              <p className="text-xs text-gray-600">{translate('program_community_desc')}</p>
             </div>
             <div className="text-center p-3 bg-amber-50 rounded-lg">
               <svg
@@ -278,8 +277,8 @@ export default function Learn() {
                   d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              <p className="font-semibold text-amber-900">Certificado</p>
-              <p className="text-xs text-gray-600">Al completar cada nivel</p>
+              <p className="font-semibold text-amber-900">{translate('program_certificate')}</p>
+              <p className="text-xs text-gray-600">{translate('program_certificate_desc')}</p>
             </div>
           </div>
         </div>
