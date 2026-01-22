@@ -121,6 +121,27 @@ export const TRANSLATIONS = {
     audio_player_label: 'Reproductor de audio para',
     browser_no_audio: 'Tu navegador no soporta el elemento de audio.',
     download_episode_here: 'Descarga el episodio aquí',
+    // Lessons translations
+    lesson_1_title: 'Introducción al Inglés Básico',
+    lesson_1_description: 'Aprende los fundamentos del inglés con vocabulario esencial para la vida diaria en comunidades cafetaleras. Saludos, presentaciones y frases básicas.',
+    lesson_2_title: 'Números y Colores en Inglés',
+    lesson_2_description: 'Domina los números del 1 al 100 y los colores básicos en inglés. Aprende a contar y describir en inglés desde tu contexto.',
+    lesson_3_title: 'Conversaciones Cotidianas en Inglés',
+    lesson_3_description: 'Practica diálogos comunes en inglés sobre el trabajo en el café, la familia y la comunidad. Situaciones reales de tu día a día.',
+    lesson_4_title: 'Vocabulario del Café en Inglés',
+    lesson_4_description: 'Aprende términos en inglés relacionados con el cultivo, procesamiento y comercialización del café. Vocabulario especializado para tu trabajo.',
+    lesson_5_title: 'Inglés para Negocios del Café',
+    lesson_5_description: 'Desarrolla habilidades de comunicación en inglés para negociar, vender y relacionarte con compradores internacionales de café.',
+    lesson_6_title: 'Inglés para Oportunidades Económicas',
+    lesson_6_description: 'Aprende inglés avanzado para acceder a mejores oportunidades laborales, turismo comunitario y emprendimientos relacionados con el café.',
+    // Products translations
+    product_1_name: 'Café de Origen Especial',
+    product_1_description: 'Café 100% orgánico cultivado en comunidades cafetaleras. Cada compra apoya directamente a las familias productoras.',
+    product_2_name: 'Artesanías Locales',
+    product_2_description: 'Productos artesanales únicos hechos por comunidades cafetaleras. Cada pieza cuenta una historia.',
+    product_3_name: 'Kit de Café Premium',
+    product_3_description: 'Incluye café molido, filtros y guía de preparación. Perfecto para amantes del café con causa social.',
+    product_default_description: 'Producto con valor social',
   },
   en: {
     // Home page
@@ -245,6 +266,27 @@ export const TRANSLATIONS = {
     audio_player_label: 'Audio player for',
     browser_no_audio: 'Your browser does not support the audio element.',
     download_episode_here: 'Download the episode here',
+    // Lessons translations
+    lesson_1_title: 'Introduction to Basic English',
+    lesson_1_description: 'Learn the fundamentals of English with essential vocabulary for daily life in coffee-growing communities. Greetings, introductions, and basic phrases.',
+    lesson_2_title: 'Numbers and Colors in English',
+    lesson_2_description: 'Master numbers from 1 to 100 and basic colors in English. Learn to count and describe in English from your context.',
+    lesson_3_title: 'Everyday Conversations in English',
+    lesson_3_description: 'Practice common English dialogues about work in coffee, family, and community. Real situations from your daily life.',
+    lesson_4_title: 'Coffee Vocabulary in English',
+    lesson_4_description: 'Learn English terms related to coffee cultivation, processing, and marketing. Specialized vocabulary for your work.',
+    lesson_5_title: 'English for Coffee Business',
+    lesson_5_description: 'Develop English communication skills to negotiate, sell, and interact with international coffee buyers.',
+    lesson_6_title: 'English for Economic Opportunities',
+    lesson_6_description: 'Learn advanced English to access better job opportunities, community tourism, and coffee-related entrepreneurship.',
+    // Products translations
+    product_1_name: 'Special Origin Coffee',
+    product_1_description: '100% organic coffee cultivated in coffee-growing communities. Each purchase directly supports producing families.',
+    product_2_name: 'Local Crafts',
+    product_2_description: 'Unique handcrafted products made by coffee-growing communities. Each piece tells a story.',
+    product_3_name: 'Premium Coffee Kit',
+    product_3_description: 'Includes ground coffee, filters, and brewing guide. Perfect for coffee lovers with a social cause.',
+    product_default_description: 'Product with social value',
   }
 };
 

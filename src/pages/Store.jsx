@@ -37,7 +37,7 @@ export default function Store() {
                 {product.image_url ? (
                   <img
                     src={product.image_url}
-                    alt={product.name}
+                    alt={translate(`product_${product.id}_name`)}
                     className="w-full h-full object-cover"
                     loading="lazy"
                   />
@@ -61,16 +61,16 @@ export default function Store() {
 
               <div className="p-5 flex-grow flex flex-col">
                 <h2 className="text-lg font-bold text-amber-900 mb-2 line-clamp-2">
-                  {product.name}
+                  {translate(`product_${product.id}_name`)}
                 </h2>
 
-                {product.description ? (
+                {translate(`product_${product.id}_description`) ? (
                   <p className="text-gray-700 text-sm mb-4 flex-grow line-clamp-3">
-                    {product.description}
+                    {translate(`product_${product.id}_description`)}
                   </p>
                 ) : (
                   <p className="text-gray-500 text-sm mb-4 flex-grow italic">
-                    Producto con valor social
+                    {translate('product_default_description')}
                   </p>
                 )}
 
@@ -86,7 +86,7 @@ export default function Store() {
 
                   <button
                     type="button"
-                    onClick={() => handlePurchase(product.id, product.name, product.price_usd, translate)}
+                    onClick={() => handlePurchase(product.id, translate(`product_${product.id}_name`), product.price_usd, translate)}
                     className="w-full bg-amber-900 text-white font-semibold px-4 py-3 rounded-lg hover:bg-amber-800 active:bg-amber-950 focus:outline-none focus:ring-4 focus:ring-amber-300 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]"
                   >
                     {translate('buy_button')}

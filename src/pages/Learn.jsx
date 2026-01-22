@@ -55,11 +55,11 @@ export default function Learn() {
                 className="bg-white rounded-lg shadow-md p-5 sm:p-6 border-l-4 border-green-500 hover:shadow-lg transition-shadow"
               >
                 <div className="flex items-start justify-between mb-2">
-                  <h3 className="text-lg font-bold text-gray-900 flex-1">{lesson.title}</h3>
+                  <h3 className="text-lg font-bold text-gray-900 flex-1">{translate(`lesson_${lesson.id}_title`)}</h3>
                 </div>
-                {lesson.description ? (
+                {translate(`lesson_${lesson.id}_description`) ? (
                   <p className="text-gray-700 text-sm leading-relaxed mb-3">
-                    {lesson.description}
+                    {translate(`lesson_${lesson.id}_description`)}
                   </p>
                 ) : (
                   <p className="text-gray-500 text-sm italic mb-3">{translate('beginner_level')}</p>
@@ -124,11 +124,11 @@ export default function Learn() {
                 className="bg-white rounded-lg shadow-md p-5 sm:p-6 border-l-4 border-blue-500 hover:shadow-lg transition-shadow"
               >
                 <div className="flex items-start justify-between mb-2">
-                  <h3 className="text-lg font-bold text-gray-900 flex-1">{lesson.title}</h3>
+                  <h3 className="text-lg font-bold text-gray-900 flex-1">{translate(`lesson_${lesson.id}_title`)}</h3>
                 </div>
-                {lesson.description ? (
+                {translate(`lesson_${lesson.id}_description`) ? (
                   <p className="text-gray-700 text-sm leading-relaxed mb-3">
-                    {lesson.description}
+                    {translate(`lesson_${lesson.id}_description`)}
                   </p>
                 ) : (
                   <p className="text-gray-500 text-sm italic mb-3">{translate('intermediate_level')}</p>
@@ -179,11 +179,11 @@ export default function Learn() {
                 className="bg-white rounded-lg shadow-md p-5 sm:p-6 border-l-4 border-purple-500 hover:shadow-lg transition-shadow"
               >
                 <div className="flex items-start justify-between mb-2">
-                  <h3 className="text-lg font-bold text-gray-900 flex-1">{lesson.title}</h3>
+                  <h3 className="text-lg font-bold text-gray-900 flex-1">{translate(`lesson_${lesson.id}_title`)}</h3>
                 </div>
-                {lesson.description ? (
+                {translate(`lesson_${lesson.id}_description`) ? (
                   <p className="text-gray-700 text-sm leading-relaxed mb-3">
-                    {lesson.description}
+                    {translate(`lesson_${lesson.id}_description`)}
                   </p>
                 ) : (
                   <p className="text-gray-500 text-sm italic mb-3">{translate('advanced_level')}</p>
