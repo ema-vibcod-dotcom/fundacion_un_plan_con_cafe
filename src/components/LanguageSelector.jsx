@@ -1,7 +1,7 @@
 import { useLanguage } from '../contexts/LanguageContext';
 
 export default function LanguageSelector() {
-  const { language, changeLanguage } = useLanguage();
+  const { language, changeLanguage, translate } = useLanguage();
 
   return (
     <div className="flex gap-2">
@@ -12,7 +12,7 @@ export default function LanguageSelector() {
             ? 'bg-white text-amber-900 shadow-md'
             : 'bg-amber-800 text-white border-2 border-white hover:bg-amber-700'
         }`}
-        aria-label="Cambiar a Español"
+        aria-label={translate('change_to_spanish')}
       >
         ES
       </button>
@@ -23,7 +23,7 @@ export default function LanguageSelector() {
             ? 'bg-white text-amber-900 shadow-md'
             : 'bg-amber-800 text-white border-2 border-white hover:bg-amber-700'
         }`}
-        aria-label="Change to English"
+        aria-label={translate('change_to_english')}
       >
         EN
       </button>

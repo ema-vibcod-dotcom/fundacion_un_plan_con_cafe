@@ -99,6 +99,28 @@ export const TRANSLATIONS = {
     podcast_stories_desc: 'Testimonios de comunidades',
     podcast_free: 'Gratis y accesible',
     podcast_free_desc: 'Escucha cuando quieras',
+    // Navigation
+    nav_main: 'Navegación principal',
+    nav_home: 'Home',
+    nav_home_label: 'Ir a inicio',
+    nav_donate: 'Donate',
+    nav_donate_label: 'Ir a donaciones',
+    nav_store: 'Store',
+    nav_store_label: 'Ir a tienda',
+    nav_learn: 'Learn',
+    nav_learn_label: 'Ir a aprender inglés',
+    nav_podcast: 'Podcast',
+    nav_podcast_label: 'Ir a podcast',
+    // Header
+    foundation_name: 'Fundación Un Plan con Café',
+    // Accessibility
+    skip_to_content: 'Saltar al contenido principal',
+    close_message: 'Cerrar mensaje',
+    change_to_spanish: 'Cambiar a Español',
+    change_to_english: 'Change to English',
+    audio_player_label: 'Reproductor de audio para',
+    browser_no_audio: 'Tu navegador no soporta el elemento de audio.',
+    download_episode_here: 'Descarga el episodio aquí',
   },
   en: {
     // Home page
@@ -112,8 +134,8 @@ export const TRANSLATIONS = {
     products_title: 'Products with Social Value',
     products_description: 'Every product you buy directly supports coffee-growing communities. From origin coffee to local crafts.',
     view_products: 'View products →',
-    education_title: 'Bilingual Education',
-    education_description: 'Free bilingual education programs for children and adults in coffee-growing communities. We strengthen both Spanish and local indigenous languages.',
+    education_title: 'Learn English',
+    education_description: 'Free English learning programs for coffee-growing communities in Colombia. Learn English from your context, with vocabulary and situations related to coffee and your community.',
     explore_lessons: 'Explore lessons →',
     podcast_title: 'Podcast',
     podcast_description: 'Listen to inspiring stories from the communities we support, conversations about sustainability, coffee culture, and the impact of bilingual education.',
@@ -177,7 +199,7 @@ export const TRANSLATIONS = {
     no_lessons_intermediate: 'No intermediate level lessons available yet.',
     no_lessons_advanced: 'No advanced level lessons available yet.',
     program_title: 'About our educational program',
-    program_description: 'Our bilingual education program is designed to strengthen both Spanish and indigenous languages in coffee-growing communities. Each lesson is carefully structured to be accessible and practical.',
+    program_description: 'Our English program is specifically designed for coffee-growing communities in Colombia. You will learn English from your context: coffee vocabulary, everyday situations in your community, and economic opportunities. Each lesson is carefully structured to be accessible and practical.',
     program_free: '100% Free',
     program_free_desc: 'Free access to all English lessons',
     program_community: 'Community',
@@ -201,6 +223,28 @@ export const TRANSLATIONS = {
     podcast_stories_desc: 'Community testimonials',
     podcast_free: 'Free and accessible',
     podcast_free_desc: 'Listen whenever you want',
+    // Navigation
+    nav_main: 'Main navigation',
+    nav_home: 'Home',
+    nav_home_label: 'Go to home',
+    nav_donate: 'Donate',
+    nav_donate_label: 'Go to donations',
+    nav_store: 'Store',
+    nav_store_label: 'Go to store',
+    nav_learn: 'Learn',
+    nav_learn_label: 'Go to learn English',
+    nav_podcast: 'Podcast',
+    nav_podcast_label: 'Go to podcast',
+    // Header
+    foundation_name: 'Fundación Un Plan con Café',
+    // Accessibility
+    skip_to_content: 'Skip to main content',
+    close_message: 'Close message',
+    change_to_spanish: 'Change to Spanish',
+    change_to_english: 'Change to English',
+    audio_player_label: 'Audio player for',
+    browser_no_audio: 'Your browser does not support the audio element.',
+    download_episode_here: 'Download the episode here',
   }
 };
 

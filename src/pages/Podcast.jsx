@@ -66,19 +66,19 @@ export default function Podcast() {
                     controls
                     preload="metadata"
                     className="w-full h-12"
-                    aria-label={`Reproductor de audio para ${episode.title}`}
+                    aria-label={`${translate('audio_player_label')} ${episode.title}`}
                   >
                     <source src={episode.audio_url} type="audio/mpeg" />
                     <source src={episode.audio_url} type="audio/ogg" />
                     <source src={episode.audio_url} type="audio/wav" />
                     <p className="text-sm text-gray-600">
-                      Tu navegador no soporta el elemento de audio.{' '}
+                      {translate('browser_no_audio')}{' '}
                       <a
                         href={episode.audio_url}
                         className="text-amber-900 underline"
                         download
                       >
-                        Descarga el episodio aquí
+                        {translate('download_episode_here')}
                       </a>
                     </p>
                   </audio>

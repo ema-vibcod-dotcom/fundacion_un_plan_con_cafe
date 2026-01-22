@@ -1,7 +1,10 @@
 import Header from './Header';
 import Navigation from './Navigation';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export default function Layout({ children }) {
+  const { translate } = useLanguage();
+  
   return (
     <div className="bg-gray-50 min-h-screen flex flex-col antialiased">
       {/* Skip to main content link (accesibilidad) */}
@@ -9,7 +12,7 @@ export default function Layout({ children }) {
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-amber-900 focus:text-white focus:rounded-md"
       >
-        Saltar al contenido principal
+        {translate('skip_to_content')}
       </a>
 
       <Header />

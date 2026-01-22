@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export default function FlashMessage({ message, type = 'success', onClose }) {
+  const { translate } = useLanguage();
   useEffect(() => {
     if (onClose && message) {
       const timer = setTimeout(() => {
@@ -53,7 +55,7 @@ export default function FlashMessage({ message, type = 'success', onClose }) {
           <button
             onClick={onClose}
             className="ml-2 text-current opacity-70 hover:opacity-100"
-            aria-label="Cerrar mensaje"
+            aria-label={translate('close_message')}
           >
             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
               <path
