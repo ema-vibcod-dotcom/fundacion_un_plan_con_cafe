@@ -27,6 +27,8 @@ export async function getEpisodiosPodcast(params = {}) {
           urlApplePodcast: episodio.url_apple_podcast,
           urlYoutube: episodio.url_youtube,
           imagenPortada: episodio.imagen_portada ? { url: episodio.imagen_portada } : null,
+          imageUrl: episodio.image_url || null,
+          image_url: episodio.image_url || null, // Mantener ambos para compatibilidad
           slug: episodio.slug,
           numeroEpisodio: episodio.numero_episodio,
         },
@@ -59,6 +61,8 @@ export async function getEpisodioById(id) {
           urlApplePodcast: episodio.url_apple_podcast,
           urlYoutube: episodio.url_youtube,
           imagenPortada: episodio.imagen_portada ? { url: episodio.imagen_portada } : null,
+          imageUrl: episodio.image_url || null,
+          image_url: episodio.image_url || null, // Mantener ambos para compatibilidad
           slug: episodio.slug,
           numeroEpisodio: episodio.numero_episodio,
         },

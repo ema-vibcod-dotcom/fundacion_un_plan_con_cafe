@@ -24,10 +24,6 @@ export async function getProductos(params = {}) {
       productos = productos.filter(p => p.estado === params.filters.estado);
     }
     
-    if (params.filters?.categoria) {
-      productos = productos.filter(p => p.categoria === params.filters.categoria);
-    }
-    
     if (params.filters?.stockBajo) {
       productos = productos.filter(p => p.stock < 10);
     }
@@ -47,7 +43,10 @@ export async function getProductos(params = {}) {
           videoCreador: producto.video_creador ? { url: producto.video_creador } : null,
           historiaCreador: producto.historia_creador,
           nombreCreador: producto.nombre_creador,
-          categoria: producto.categoria,
+          imageUrl: producto.image_url || null,
+          image_url: producto.image_url || null, // Mantener ambos para compatibilidad
+          videoUrl: producto.video_url || null,
+          video_url: producto.video_url || null, // Mantener ambos para compatibilidad
           slug: producto.slug,
         },
       })),
@@ -82,7 +81,10 @@ export async function getProductoById(id) {
           videoCreador: producto.video_creador ? { url: producto.video_creador } : null,
           historiaCreador: producto.historia_creador,
           nombreCreador: producto.nombre_creador,
-          categoria: producto.categoria,
+          imageUrl: producto.image_url || null,
+          image_url: producto.image_url || null, // Mantener ambos para compatibilidad
+          videoUrl: producto.video_url || null,
+          video_url: producto.video_url || null, // Mantener ambos para compatibilidad
           slug: producto.slug,
         },
       };
@@ -131,13 +133,14 @@ export async function getProductosDisponibles() {
 
 /**
  * Obtener productos por categoría
- * @param {string} categoria - Categoría (cafe, artesanias, otros)
- * @returns {Promise<Array>} Lista de productos
+ * @deprecated Las categorías han sido removidas. Esta función retorna todos los productos activos.
+ * @param {string} categoria - Categoría (ignorado)
+ * @returns {Promise<Array>} Lista de productos activos
  */
 export async function getProductosByCategoria(categoria) {
+  // Categorías removidas - retornar todos los productos activos
   return getProductos({
     filters: {
-      categoria,
       activo: true,
     },
   });

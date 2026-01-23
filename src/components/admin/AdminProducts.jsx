@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { getProductos } from '../../services/productoService';
 import { useLanguage } from '../../contexts/LanguageContext';
+import ImageUrlInput from './ImageUrlInput';
+import VideoUrlInput from '../VideoUrlInput';
 
 export default function AdminProducts() {
   const [productos, setProductos] = useState([]);
@@ -85,7 +87,8 @@ export default function AdminProducts() {
         video_creador: productData.videoCreador || null,
         historia_creador: productData.historiaCreador,
         nombre_creador: productData.nombreCreador,
-        categoria: productData.categoria || 'otros',
+        image_url: productData.imageUrl || null,
+        video_url: productData.videoUrl || null,
         slug: productData.slug || productData.nombre.toLowerCase().replace(/\s+/g, '-'),
       };
       
@@ -230,7 +233,8 @@ function ProductForm({ product, onSave, onCancel }) {
     activo: product?.attributes?.activo !== undefined ? product.attributes.activo : true,
     nombreCreador: product?.attributes?.nombreCreador || '',
     historiaCreador: product?.attributes?.historiaCreador || '',
-    categoria: product?.attributes?.categoria || 'otros',
+    imageUrl: product?.attributes?.imageUrl || product?.attributes?.image_url || '',
+    videoUrl: product?.attributes?.videoUrl || product?.attributes?.video_url || '',
   });
 
   const handleSubmit = (e) => {
@@ -252,29 +256,15 @@ function ProductForm({ product, onSave, onCancel }) {
         {product ? 'Editar Producto' : 'Crear Nuevo Producto'}
       </h3>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Nombre *</label>
-            <input
-              type="text"
-              value={formData.nombre}
-              onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Categoría</label>
-            <select
-              value={formData.categoria}
-              onChange={(e) => setFormData({ ...formData, categoria: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none"
-            >
-              <option value="cafe">Café</option>
-              <option value="artesanias">Artesanías</option>
-              <option value="otros">Otros</option>
-            </select>
-          </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Nombre *</label>
+          <input
+            type="text"
+            value={formData.nombre}
+            onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none"
+            required
+          />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Descripción Corta</label>
@@ -339,6 +329,39 @@ function ProductForm({ product, onSave, onCancel }) {
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none"
             required
           />
+        </div>
+
+        {/* Sección de Media */}
+        <div className="border-t border-gray-200 pt-5 mt-5 bg-amber-50/30 rounded-lg p-4 sm:p-5">
+          <div className="mb-5 flex items-start gap-2">
+            <div className="mt-0.5">
+              <svg className="w-5 h-5 text-amber-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <div className="flex-1">
+              <h4 className="text-base font-semibold text-amber-900 mb-1">Media</h4>
+              <p className="text-xs sm:text-sm text-gray-500">
+                Agrega imágenes y videos del producto usando URLs públicas
+              </p>
+            </div>
+          </div>
+          <div className="space-y-4 sm:space-y-5">
+            <div>
+              <ImageUrlInput
+                value={formData.imageUrl}
+                onChange={(url) => setFormData({ ...formData, imageUrl: url })}
+                label="URL de Imagen Principal"
+              />
+            </div>
+            <div>
+              <VideoUrlInput
+                value={formData.videoUrl}
+                onChange={(url) => setFormData({ ...formData, videoUrl: url })}
+                label="URL de Video del Producto"
+              />
+            </div>
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <input

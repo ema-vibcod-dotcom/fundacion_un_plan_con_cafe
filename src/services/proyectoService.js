@@ -38,6 +38,8 @@ export async function getProyectos(params = {}) {
           fechaFinalizacion: proyecto.fecha_finalizacion,
           galeriaImagenes: proyecto.galeria_imagenes || [],
           videoCorto: proyecto.video_corto ? { url: proyecto.video_corto } : null,
+          imageUrl: proyecto.image_url || null,
+          image_url: proyecto.image_url || null, // Mantener ambos para compatibilidad
           slug: proyecto.slug,
           voluntarios: proyecto.voluntarios,
           porcentajeFinanciado: proyecto.porcentaje_financiado,
@@ -72,6 +74,8 @@ export async function getProyectoById(id) {
           fechaFinalizacion: proyecto.fecha_finalizacion,
           galeriaImagenes: proyecto.galeria_imagenes || [],
           videoCorto: proyecto.video_corto ? { url: proyecto.video_corto } : null,
+          imageUrl: proyecto.image_url || null,
+          image_url: proyecto.image_url || null, // Mantener ambos para compatibilidad
           slug: proyecto.slug,
           voluntarios: proyecto.voluntarios,
           porcentajeFinanciado: proyecto.porcentaje_financiado,

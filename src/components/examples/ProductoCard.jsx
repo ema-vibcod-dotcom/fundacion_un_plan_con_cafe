@@ -5,6 +5,7 @@
 
 import { useState, useEffect } from 'react';
 import { getProductoById } from '../../services/productoService';
+import VideoPlayer from '../VideoPlayer';
 
 export default function ProductoCard({ productoId }) {
   const [producto, setProducto] = useState(null);
@@ -70,16 +71,19 @@ export default function ProductoCard({ productoId }) {
         </div>
       )}
 
-      <div className="p-6">
-        {/* Categoría */}
-        {attributes.categoria && (
-          <span className="text-xs text-amber-700 uppercase tracking-wide">
-            {attributes.categoria}
-          </span>
-        )}
+      {/* Video del producto (debajo de la imagen) */}
+      {(attributes.videoUrl || attributes.video_url) && (
+        <div className="px-6 py-4">
+          <VideoPlayer 
+            videoUrl={attributes.videoUrl || attributes.video_url} 
+            title={`Video de ${attributes.nombre}`}
+          />
+        </div>
+      )}
 
+      <div className="p-6">
         {/* Nombre */}
-        <h3 className="text-xl font-bold text-amber-900 mt-2 mb-2">
+        <h3 className="text-xl font-bold text-amber-900 mb-2">
           {attributes.nombre}
         </h3>
 
