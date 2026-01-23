@@ -2,8 +2,9 @@
 export const TRANSLATIONS = {
   es: {
     // Home page
-    hero_title: 'Transformando vidas a través del café y la educación',
-    hero_description: 'Somos una fundación comprometida con enseñar inglés a comunidades cafetaleras en Colombia, abriendo puertas a nuevas oportunidades económicas y desarrollo comunitario.',
+    hero_subtitle: 'Acerca de',
+    hero_title: 'Donar educación y arte es sembrar para toda la vida 🤎',
+    hero_description: 'Un Plan con Café transforma la educación rural en Colombia, llevando arte y propósito a los niños que más lo necesitan. Reconocemos la valentía de quienes caminan una hora cada día para aprender, y respondemos convirtiendo sus escuelas en centros de transformación social. Tu apoyo permite que sigamos entregando más que libros: oportunidades reales de vida.',
     donate_button: 'Donar ahora',
     impact_title: 'Impacto Social',
     impact_description: 'Hemos apoyado a más de {count} familias en comunidades cafetaleras, proporcionando recursos educativos y oportunidades de desarrollo económico sostenible.',
@@ -145,8 +146,9 @@ export const TRANSLATIONS = {
   },
   en: {
     // Home page
-    hero_title: 'Transforming lives through coffee and education',
-    hero_description: 'We are a foundation committed to teaching English to coffee-growing communities in Colombia, opening doors to new economic opportunities and community development.',
+    hero_subtitle: 'About',
+    hero_title: 'Donating education and art is sowing for a lifetime 🤎',
+    hero_description: 'Un Plan con Café transforms rural education in Colombia, bringing art and purpose to the children who need it most. We recognize the courage of those who walk an hour each day to learn, and we respond by turning their schools into centers of social transformation. Your support allows us to continue delivering more than books: real life opportunities.',
     donate_button: 'Donate now',
     impact_title: 'Social Impact',
     impact_description: 'We have supported more than {count} families in coffee-growing communities, providing educational resources and sustainable economic development opportunities.',
