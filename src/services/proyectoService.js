@@ -1,61 +1,54 @@
-import { strapiFetch, getStrapiImageUrl, getStrapiVideoUrl } from './strapiConfig';
+import { apiFetch } from './apiConfig';
 
 /**
- * Servicio para gestionar proyectos desde Strapi
+ * Servicio para gestionar proyectos desde Vercel API
  */
 
 /**
  * Obtener todos los proyectos
- * @param {object} params - Parámetros de consulta (populate, filters, sort, pagination)
+ * @param {object} params - Parámetros de consulta (filters, sort)
  * @returns {Promise<Array>} Lista de proyectos
  */
 export async function getProyectos(params = {}) {
-  const {
-    populate = '*',
-    filters = {},
-    sort = 'fechaInicio:desc',
-    pagination = { page: 1, pageSize: 10 },
-  } = params;
-
-  const queryParams = new URLSearchParams({
-    'populate': populate,
-    'sort': sort,
-    'pagination[page]': pagination.page,
-    'pagination[pageSize]': pagination.pageSize,
-  });
-
-  // Agregar filtros
-  if (filters.estado) {
-    queryParams.append('filters[estado][$eq]', filters.estado);
+  try {
+    const response = await apiFetch('/api/proyectos');
+    
+    // Formatear datos para compatibilidad con el código existente
+    let proyectos = response.data || [];
+    
+    // Aplicar filtros si existen
+    if (params.filters?.estado) {
+      proyectos = proyectos.filter(p => p.estado === params.filters.estado);
+    }
+    
+    // Aplicar ordenamiento
+    if (params.sort === 'fechaInicio:desc' || params.sort?.includes('fecha_inicio')) {
+      proyectos.sort((a, b) => new Date(b.fecha_inicio) - new Date(a.fecha_inicio));
+    }
+    
+    // Formatear para compatibilidad con estructura Strapi
+    return {
+      data: proyectos.map(proyecto => ({
+        id: proyecto.id,
+        attributes: {
+          titulo: proyecto.titulo,
+          descripcion: proyecto.descripcion,
+          estado: proyecto.estado,
+          fechaInicio: proyecto.fecha_inicio,
+          fechaFinalizacion: proyecto.fecha_finalizacion,
+          galeriaImagenes: proyecto.galeria_imagenes || [],
+          videoCorto: proyecto.video_corto ? { url: proyecto.video_corto } : null,
+          slug: proyecto.slug,
+          voluntarios: proyecto.voluntarios,
+          porcentajeFinanciado: proyecto.porcentaje_financiado,
+          socios: proyecto.socios,
+        },
+      })),
+    };
+  } catch (error) {
+    console.error('Error obteniendo proyectos:', error);
+    return { data: [] };
   }
-
-  if (filters.published) {
-    queryParams.append('publicationState', filters.published ? 'live' : 'preview');
-  }
-
-  const response = await strapiFetch(`/api/proyectos?${queryParams.toString()}`);
-  
-  // Procesar imágenes y videos
-  if (response.data) {
-    response.data = response.data.map(proyecto => ({
-      ...proyecto,
-      attributes: {
-        ...proyecto.attributes,
-        galeriaImagenes: proyecto.attributes.galeriaImagenes?.data?.map(img => ({
-          ...img,
-          url: getStrapiImageUrl(img.attributes),
-        })) || [],
-        videoCorto: proyecto.attributes.videoCorto?.data 
-          ? {
-              ...proyecto.attributes.videoCorto.data,
-              url: getStrapiVideoUrl(proyecto.attributes.videoCorto.data.attributes),
-            }
-          : null,
-      },
-    }));
-  }
-
-  return response;
 }
 
 /**
@@ -64,29 +57,34 @@ export async function getProyectos(params = {}) {
  * @returns {Promise<object>} Proyecto
  */
 export async function getProyectoById(id) {
-  const response = await strapiFetch(`/api/proyectos/${id}?populate=*`);
-  
-  if (response.data) {
-    const proyecto = response.data;
-    return {
-      ...proyecto,
-      attributes: {
-        ...proyecto.attributes,
-        galeriaImagenes: proyecto.attributes.galeriaImagenes?.data?.map(img => ({
-          ...img,
-          url: getStrapiImageUrl(img.attributes),
-        })) || [],
-        videoCorto: proyecto.attributes.videoCorto?.data 
-          ? {
-              ...proyecto.attributes.videoCorto.data,
-              url: getStrapiVideoUrl(proyecto.attributes.videoCorto.data.attributes),
-            }
-          : null,
-      },
-    };
+  try {
+    const response = await apiFetch(`/api/proyectos?id=${id}`);
+    
+    if (response.data) {
+      const proyecto = response.data;
+      return {
+        id: proyecto.id,
+        attributes: {
+          titulo: proyecto.titulo,
+          descripcion: proyecto.descripcion,
+          estado: proyecto.estado,
+          fechaInicio: proyecto.fecha_inicio,
+          fechaFinalizacion: proyecto.fecha_finalizacion,
+          galeriaImagenes: proyecto.galeria_imagenes || [],
+          videoCorto: proyecto.video_corto ? { url: proyecto.video_corto } : null,
+          slug: proyecto.slug,
+          voluntarios: proyecto.voluntarios,
+          porcentajeFinanciado: proyecto.porcentaje_financiado,
+          socios: proyecto.socios,
+        },
+      };
+    }
+    
+    return null;
+  } catch (error) {
+    console.error('Error obteniendo proyecto:', error);
+    return null;
   }
-
-  return response;
 }
 
 /**
@@ -95,31 +93,19 @@ export async function getProyectoById(id) {
  * @returns {Promise<object>} Proyecto
  */
 export async function getProyectoBySlug(slug) {
-  const response = await strapiFetch(
-    `/api/proyectos?filters[slug][$eq]=${slug}&populate=*`
-  );
-  
-  if (response.data && response.data.length > 0) {
-    const proyecto = response.data[0];
-    return {
-      ...proyecto,
-      attributes: {
-        ...proyecto.attributes,
-        galeriaImagenes: proyecto.attributes.galeriaImagenes?.data?.map(img => ({
-          ...img,
-          url: getStrapiImageUrl(img.attributes),
-        })) || [],
-        videoCorto: proyecto.attributes.videoCorto?.data 
-          ? {
-              ...proyecto.attributes.videoCorto.data,
-              url: getStrapiVideoUrl(proyecto.attributes.videoCorto.data.attributes),
-            }
-          : null,
-      },
-    };
+  try {
+    const response = await getProyectos();
+    const proyecto = response.data?.find(p => p.attributes.slug === slug);
+    
+    if (proyecto) {
+      return proyecto;
+    }
+    
+    return null;
+  } catch (error) {
+    console.error('Error obteniendo proyecto por slug:', error);
+    return null;
   }
-
-  return null;
 }
 
 /**

@@ -44,3 +44,13 @@ __pycache__/
 *.db
 *.sqlite
 *.sqlite3
+
+# Strapi
+backend/.tmp/
+backend/.cache/
+backend/build/
+backend/dist/
+backend/.env
+backend/.env.local
+backend/.env.production
+backend/.env.development

@@ -1,7 +1,7 @@
-import { strapiFetch, getStrapiImageUrl } from './strapiConfig';
+import { apiFetch } from './apiConfig';
 
 /**
- * Servicio para gestionar episodios del podcast desde Strapi
+ * Servicio para gestionar episodios del podcast desde Vercel API
  */
 
 /**
@@ -10,44 +10,32 @@ import { strapiFetch, getStrapiImageUrl } from './strapiConfig';
  * @returns {Promise<Array>} Lista de episodios
  */
 export async function getEpisodiosPodcast(params = {}) {
-  const {
-    populate = '*',
-    filters = {},
-    sort = 'fecha:desc',
-    pagination = { page: 1, pageSize: 20 },
-  } = params;
-
-  const queryParams = new URLSearchParams({
-    'populate': populate,
-    'sort': sort,
-    'pagination[page]': pagination.page,
-    'pagination[pageSize]': pagination.pageSize,
-  });
-
-  // Filtros
-  if (filters.published) {
-    queryParams.append('publicationState', filters.published ? 'live' : 'preview');
+  try {
+    const response = await apiFetch('/api/podcast');
+    
+    let episodios = response.data || [];
+    
+    // Formatear para compatibilidad con estructura Strapi
+    return {
+      data: episodios.map(episodio => ({
+        id: episodio.id,
+        attributes: {
+          titulo: episodio.titulo,
+          descripcion: episodio.descripcion,
+          fecha: episodio.fecha,
+          urlSpotify: episodio.url_spotify,
+          urlApplePodcast: episodio.url_apple_podcast,
+          urlYoutube: episodio.url_youtube,
+          imagenPortada: episodio.imagen_portada ? { url: episodio.imagen_portada } : null,
+          slug: episodio.slug,
+          numeroEpisodio: episodio.numero_episodio,
+        },
+      })),
+    };
+  } catch (error) {
+    console.error('Error obteniendo episodios:', error);
+    return { data: [] };
   }
-
-  const response = await strapiFetch(`/api/episodios-podcast?${queryParams.toString()}`);
-  
-  // Procesar imagen de portada
-  if (response.data) {
-    response.data = response.data.map(episodio => ({
-      ...episodio,
-      attributes: {
-        ...episodio.attributes,
-        imagenPortada: episodio.attributes.imagenPortada?.data 
-          ? {
-              ...episodio.attributes.imagenPortada.data,
-              url: getStrapiImageUrl(episodio.attributes.imagenPortada.data.attributes),
-            }
-          : null,
-      },
-    }));
-  }
-
-  return response;
 }
 
 /**
@@ -56,25 +44,32 @@ export async function getEpisodiosPodcast(params = {}) {
  * @returns {Promise<object>} Episodio
  */
 export async function getEpisodioById(id) {
-  const response = await strapiFetch(`/api/episodios-podcast/${id}?populate=*`);
-  
-  if (response.data) {
-    const episodio = response.data;
-    return {
-      ...episodio,
-      attributes: {
-        ...episodio.attributes,
-        imagenPortada: episodio.attributes.imagenPortada?.data 
-          ? {
-              ...episodio.attributes.imagenPortada.data,
-              url: getStrapiImageUrl(episodio.attributes.imagenPortada.data.attributes),
-            }
-          : null,
-      },
-    };
+  try {
+    const response = await apiFetch(`/api/podcast?id=${id}`);
+    
+    if (response.data) {
+      const episodio = response.data;
+      return {
+        id: episodio.id,
+        attributes: {
+          titulo: episodio.titulo,
+          descripcion: episodio.descripcion,
+          fecha: episodio.fecha,
+          urlSpotify: episodio.url_spotify,
+          urlApplePodcast: episodio.url_apple_podcast,
+          urlYoutube: episodio.url_youtube,
+          imagenPortada: episodio.imagen_portada ? { url: episodio.imagen_portada } : null,
+          slug: episodio.slug,
+          numeroEpisodio: episodio.numero_episodio,
+        },
+      };
+    }
+    
+    return null;
+  } catch (error) {
+    console.error('Error obteniendo episodio:', error);
+    return null;
   }
-
-  return response;
 }
 
 /**
@@ -83,27 +78,19 @@ export async function getEpisodioById(id) {
  * @returns {Promise<object>} Episodio
  */
 export async function getEpisodioBySlug(slug) {
-  const response = await strapiFetch(
-    `/api/episodios-podcast?filters[slug][$eq]=${slug}&populate=*`
-  );
-  
-  if (response.data && response.data.length > 0) {
-    const episodio = response.data[0];
-    return {
-      ...episodio,
-      attributes: {
-        ...episodio.attributes,
-        imagenPortada: episodio.attributes.imagenPortada?.data 
-          ? {
-              ...episodio.attributes.imagenPortada.data,
-              url: getStrapiImageUrl(episodio.attributes.imagenPortada.data.attributes),
-            }
-          : null,
-      },
-    };
+  try {
+    const response = await getEpisodiosPodcast();
+    const episodio = response.data?.find(e => e.attributes.slug === slug);
+    
+    if (episodio) {
+      return episodio;
+    }
+    
+    return null;
+  } catch (error) {
+    console.error('Error obteniendo episodio por slug:', error);
+    return null;
   }
-
-  return null;
 }
 
 /**
@@ -112,10 +99,15 @@ export async function getEpisodioBySlug(slug) {
  * @returns {Promise<Array>} Lista de episodios recientes
  */
 export async function getEpisodiosRecientes(limit = 5) {
-  return getEpisodiosPodcast({
-    sort: 'fecha:desc',
-    pagination: { page: 1, pageSize: limit },
-  });
+  try {
+    const response = await getEpisodiosPodcast();
+    return {
+      data: response.data.slice(0, limit),
+    };
+  } catch (error) {
+    console.error('Error obteniendo episodios recientes:', error);
+    return { data: [] };
+  }
 }
 
 /**
@@ -124,27 +116,19 @@ export async function getEpisodiosRecientes(limit = 5) {
  * @returns {Promise<object>} Episodio
  */
 export async function getEpisodioByNumero(numero) {
-  const response = await strapiFetch(
-    `/api/episodios-podcast?filters[numeroEpisodio][$eq]=${numero}&populate=*`
-  );
-  
-  if (response.data && response.data.length > 0) {
-    const episodio = response.data[0];
-    return {
-      ...episodio,
-      attributes: {
-        ...episodio.attributes,
-        imagenPortada: episodio.attributes.imagenPortada?.data 
-          ? {
-              ...episodio.attributes.imagenPortada.data,
-              url: getStrapiImageUrl(episodio.attributes.imagenPortada.data.attributes),
-            }
-          : null,
-      },
-    };
+  try {
+    const response = await getEpisodiosPodcast();
+    const episodio = response.data?.find(e => e.attributes.numeroEpisodio === numero);
+    
+    if (episodio) {
+      return episodio;
+    }
+    
+    return null;
+  } catch (error) {
+    console.error('Error obteniendo episodio por número:', error);
+    return null;
   }
-
-  return null;
 }
 
 /**

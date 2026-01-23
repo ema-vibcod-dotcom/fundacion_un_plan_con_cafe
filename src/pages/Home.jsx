@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAdminAuth } from '../contexts/AdminAuthContext';
 import AdminLoginModal from '../components/AdminLoginModal';
@@ -9,12 +9,12 @@ export default function Home() {
   const { translate } = useLanguage();
   const { isAuthenticated } = useAdminAuth();
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const navigate = useNavigate();
 
   const handleAdminClick = () => {
     if (isAuthenticated) {
-      // Si ya está autenticado, redirigir directamente al panel de Strapi
-      const strapiUrl = import.meta.env.VITE_STRAPI_API_URL || 'http://localhost:1337';
-      window.open(`${strapiUrl}/admin`, '_blank');
+      // Si ya está autenticado, redirigir al panel de administración
+      navigate('/admin');
     } else {
       // Si no está autenticado, mostrar modal de login
       setShowLoginModal(true);
@@ -22,9 +22,8 @@ export default function Home() {
   };
 
   const handleLoginSuccess = () => {
-    // Después del login exitoso, redirigir al panel de Strapi
-    const strapiUrl = import.meta.env.VITE_STRAPI_API_URL || 'http://localhost:1337';
-    window.open(`${strapiUrl}/admin`, '_blank');
+    // Después del login exitoso, redirigir al panel de administración
+    navigate('/admin');
   };
 
   return (

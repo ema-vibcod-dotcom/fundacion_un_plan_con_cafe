@@ -165,6 +165,15 @@ export const TRANSLATIONS = {
     product_3_name: 'Kit de Café Premium',
     product_3_description: 'Incluye café molido, filtros y guía de preparación. Perfecto para amantes del café con causa social.',
     product_default_description: 'Producto con valor social',
+    // Admin panel translations
+    admin_panel_title: 'Panel de Administración',
+    admin_panel_subtitle: 'Gestiona el contenido del sitio',
+    admin_logout_button: 'Cerrar sesión',
+    admin_tab_projects: 'Proyectos',
+    admin_tab_products: 'Productos',
+    admin_tab_podcast: 'Podcast',
+    admin_products_title: 'Gestión de Productos',
+    admin_podcast_title: 'Gestión de Episodios',
   },
   en: {
     // Home page
@@ -333,6 +342,15 @@ export const TRANSLATIONS = {
     product_3_name: 'Premium Coffee Kit',
     product_3_description: 'Includes ground coffee, filters, and brewing guide. Perfect for coffee lovers with a social cause.',
     product_default_description: 'Product with social value',
+    // Admin panel translations
+    admin_panel_title: 'Administration Panel',
+    admin_panel_subtitle: 'Manage site content',
+    admin_logout_button: 'Logout',
+    admin_tab_projects: 'Projects',
+    admin_tab_products: 'Products',
+    admin_tab_podcast: 'Podcast',
+    admin_products_title: 'Product Management',
+    admin_podcast_title: 'Episode Management',
   }
 };
 

@@ -1,7 +1,7 @@
-import { strapiFetch, getStrapiImageUrl, getStrapiVideoUrl } from './strapiConfig';
+import { apiFetch } from './apiConfig';
 
 /**
- * Servicio para gestionar productos desde Strapi
+ * Servicio para gestionar productos desde Vercel API
  */
 
 /**
@@ -10,60 +10,52 @@ import { strapiFetch, getStrapiImageUrl, getStrapiVideoUrl } from './strapiConfi
  * @returns {Promise<Array>} Lista de productos
  */
 export async function getProductos(params = {}) {
-  const {
-    populate = '*',
-    filters = {},
-    sort = 'nombre:asc',
-    pagination = { page: 1, pageSize: 20 },
-  } = params;
-
-  const queryParams = new URLSearchParams({
-    'populate': populate,
-    'sort': sort,
-    'pagination[page]': pagination.page,
-    'pagination[pageSize]': pagination.pageSize,
-  });
-
-  // Filtros
-  if (filters.activo !== undefined) {
-    queryParams.append('filters[activo][$eq]', filters.activo);
+  try {
+    const response = await apiFetch('/api/productos');
+    
+    let productos = response.data || [];
+    
+    // Aplicar filtros
+    if (params.filters?.activo !== undefined) {
+      productos = productos.filter(p => p.activo === params.filters.activo);
+    }
+    
+    if (params.filters?.estado) {
+      productos = productos.filter(p => p.estado === params.filters.estado);
+    }
+    
+    if (params.filters?.categoria) {
+      productos = productos.filter(p => p.categoria === params.filters.categoria);
+    }
+    
+    if (params.filters?.stockBajo) {
+      productos = productos.filter(p => p.stock < 10);
+    }
+    
+    // Formatear para compatibilidad con estructura Strapi
+    return {
+      data: productos.map(producto => ({
+        id: producto.id,
+        attributes: {
+          nombre: producto.nombre,
+          descripcionCorta: producto.descripcion_corta,
+          precio: parseFloat(producto.precio),
+          stock: producto.stock,
+          estado: producto.estado,
+          activo: producto.activo,
+          galeriaImagenes: producto.galeria_imagenes || [],
+          videoCreador: producto.video_creador ? { url: producto.video_creador } : null,
+          historiaCreador: producto.historia_creador,
+          nombreCreador: producto.nombre_creador,
+          categoria: producto.categoria,
+          slug: producto.slug,
+        },
+      })),
+    };
+  } catch (error) {
+    console.error('Error obteniendo productos:', error);
+    return { data: [] };
   }
-
-  if (filters.estado) {
-    queryParams.append('filters[estado][$eq]', filters.estado);
-  }
-
-  if (filters.categoria) {
-    queryParams.append('filters[categoria][$eq]', filters.categoria);
-  }
-
-  if (filters.stockBajo) {
-    queryParams.append('filters[stock][$lt]', 10); // Stock menor a 10
-  }
-
-  const response = await strapiFetch(`/api/productos?${queryParams.toString()}`);
-  
-  // Procesar imágenes y videos
-  if (response.data) {
-    response.data = response.data.map(producto => ({
-      ...producto,
-      attributes: {
-        ...producto.attributes,
-        galeriaImagenes: producto.attributes.galeriaImagenes?.data?.map(img => ({
-          ...img,
-          url: getStrapiImageUrl(img.attributes),
-        })) || [],
-        videoCreador: producto.attributes.videoCreador?.data 
-          ? {
-              ...producto.attributes.videoCreador.data,
-              url: getStrapiVideoUrl(producto.attributes.videoCreador.data.attributes),
-            }
-          : null,
-      },
-    }));
-  }
-
-  return response;
 }
 
 /**
@@ -72,29 +64,35 @@ export async function getProductos(params = {}) {
  * @returns {Promise<object>} Producto
  */
 export async function getProductoById(id) {
-  const response = await strapiFetch(`/api/productos/${id}?populate=*`);
-  
-  if (response.data) {
-    const producto = response.data;
-    return {
-      ...producto,
-      attributes: {
-        ...producto.attributes,
-        galeriaImagenes: producto.attributes.galeriaImagenes?.data?.map(img => ({
-          ...img,
-          url: getStrapiImageUrl(img.attributes),
-        })) || [],
-        videoCreador: producto.attributes.videoCreador?.data 
-          ? {
-              ...producto.attributes.videoCreador.data,
-              url: getStrapiVideoUrl(producto.attributes.videoCreador.data.attributes),
-            }
-          : null,
-      },
-    };
+  try {
+    const response = await apiFetch(`/api/productos?id=${id}`);
+    
+    if (response.data) {
+      const producto = response.data;
+      return {
+        id: producto.id,
+        attributes: {
+          nombre: producto.nombre,
+          descripcionCorta: producto.descripcion_corta,
+          precio: parseFloat(producto.precio),
+          stock: producto.stock,
+          estado: producto.estado,
+          activo: producto.activo,
+          galeriaImagenes: producto.galeria_imagenes || [],
+          videoCreador: producto.video_creador ? { url: producto.video_creador } : null,
+          historiaCreador: producto.historia_creador,
+          nombreCreador: producto.nombre_creador,
+          categoria: producto.categoria,
+          slug: producto.slug,
+        },
+      };
+    }
+    
+    return null;
+  } catch (error) {
+    console.error('Error obteniendo producto:', error);
+    return null;
   }
-
-  return response;
 }
 
 /**
@@ -103,31 +101,19 @@ export async function getProductoById(id) {
  * @returns {Promise<object>} Producto
  */
 export async function getProductoBySlug(slug) {
-  const response = await strapiFetch(
-    `/api/productos?filters[slug][$eq]=${slug}&populate=*`
-  );
-  
-  if (response.data && response.data.length > 0) {
-    const producto = response.data[0];
-    return {
-      ...producto,
-      attributes: {
-        ...producto.attributes,
-        galeriaImagenes: producto.attributes.galeriaImagenes?.data?.map(img => ({
-          ...img,
-          url: getStrapiImageUrl(img.attributes),
-        })) || [],
-        videoCreador: producto.attributes.videoCreador?.data 
-          ? {
-              ...producto.attributes.videoCreador.data,
-              url: getStrapiVideoUrl(producto.attributes.videoCreador.data.attributes),
-            }
-          : null,
-      },
-    };
+  try {
+    const response = await getProductos();
+    const producto = response.data?.find(p => p.attributes.slug === slug);
+    
+    if (producto) {
+      return producto;
+    }
+    
+    return null;
+  } catch (error) {
+    console.error('Error obteniendo producto por slug:', error);
+    return null;
   }
-
-  return null;
 }
 
 /**
@@ -140,7 +126,6 @@ export async function getProductosDisponibles() {
       activo: true,
       estado: 'disponible',
     },
-    sort: 'nombre:asc',
   });
 }
 
@@ -155,7 +140,6 @@ export async function getProductosByCategoria(categoria) {
       categoria,
       activo: true,
     },
-    sort: 'nombre:asc',
   });
 }
 
@@ -165,22 +149,19 @@ export async function getProductosByCategoria(categoria) {
  * @returns {Promise<Array>} Lista de productos con stock bajo
  */
 export async function getProductosStockBajo(limite = 10) {
-  const response = await strapiFetch(
-    `/api/productos?filters[stock][$lt]=${limite}&filters[activo][$eq]=true&populate=*&sort=stock:asc`
-  );
-  
-  if (response.data) {
-    response.data = response.data.map(producto => ({
-      ...producto,
-      attributes: {
-        ...producto.attributes,
-        galeriaImagenes: producto.attributes.galeriaImagenes?.data?.map(img => ({
-          ...img,
-          url: getStrapiImageUrl(img.attributes),
-        })) || [],
+  try {
+    const response = await getProductos({
+      filters: {
+        activo: true,
+        stockBajo: true,
       },
-    }));
+    });
+    
+    return {
+      data: response.data.filter(p => p.attributes.stock < limite),
+    };
+  } catch (error) {
+    console.error('Error obteniendo productos con stock bajo:', error);
+    return { data: [] };
   }
-
-  return response;
 }
