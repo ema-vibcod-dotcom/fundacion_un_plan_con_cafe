@@ -100,6 +100,30 @@ export default function Navigation() {
           <span className="text-xs font-medium truncate w-full text-center">{translate('nav_store')}</span>
         </NavLink>
 
+        {/* Projects */}
+        <NavLink
+          to="/projects"
+          aria-label={translate('nav_projects_label')}
+          aria-current={isActive('/projects') ? 'page' : 'false'}
+          className={navItemClass('/projects')}
+        >
+          <svg
+            className="w-6 h-6 mb-0.5 flex-shrink-0"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+            />
+          </svg>
+          <span className="text-xs font-medium truncate w-full text-center">{translate('nav_projects')}</span>
+        </NavLink>
+
         {/* Podcast */}
         <NavLink
           to="/podcast"

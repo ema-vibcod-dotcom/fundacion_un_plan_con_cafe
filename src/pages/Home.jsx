@@ -149,14 +149,16 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-amber-50 rounded-xl p-6 text-center border-2 border-amber-200">
+      <section className="bg-amber-50 rounded-xl p-5 sm:p-6 text-center border-2 border-amber-200 mb-6 sm:mb-8">
         <h2 className="text-xl font-bold text-amber-900 mb-3">
           {translate('cta_title')}
         </h2>
-        <p className="text-gray-700 mb-6 text-sm">{translate('cta_description')}</p>
+        <p className="text-gray-700 mb-5 sm:mb-6 text-sm leading-relaxed px-2">
+          {translate('cta_description')}
+        </p>
         <Link
           to="/donate"
-          className="inline-block bg-amber-900 text-white font-bold px-6 py-3 rounded-lg shadow-md hover:bg-amber-800 active:bg-amber-950 focus:outline-none focus:ring-4 focus:ring-amber-300 transition-all duration-200 w-full sm:w-auto"
+          className="inline-block bg-amber-900 text-white font-bold px-8 py-3 rounded-lg shadow-md hover:bg-amber-800 active:bg-amber-950 focus:outline-none focus:ring-4 focus:ring-amber-300 transition-all duration-200 w-full sm:w-auto max-w-xs"
         >
           {translate('donate_now')}
         </Link>
