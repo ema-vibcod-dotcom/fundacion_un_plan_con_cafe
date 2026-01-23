@@ -172,6 +172,7 @@ export const TRANSLATIONS = {
     admin_tab_projects: 'Proyectos',
     admin_tab_products: 'Productos',
     admin_tab_podcast: 'Podcast',
+    admin_projects_title: 'Gestión de Proyectos',
     admin_products_title: 'Gestión de Productos',
     admin_podcast_title: 'Gestión de Episodios',
   },
@@ -349,6 +350,7 @@ export const TRANSLATIONS = {
     admin_tab_projects: 'Projects',
     admin_tab_products: 'Products',
     admin_tab_podcast: 'Podcast',
+    admin_projects_title: 'Project Management',
     admin_products_title: 'Product Management',
     admin_podcast_title: 'Episode Management',
   }

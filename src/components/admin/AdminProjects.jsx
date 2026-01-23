@@ -105,7 +105,7 @@ export default function AdminProjects() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-xl font-bold text-amber-900">
-          {translate('admin_products_title') || 'Gestión de Proyectos'}
+          {translate('admin_projects_title') || 'Gestión de Proyectos'}
         </h2>
         <button
           onClick={handleCreate}
