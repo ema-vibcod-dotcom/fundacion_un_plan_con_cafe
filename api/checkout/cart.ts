@@ -48,6 +48,9 @@ export default async function handler(req: any, res: any) {
       quantity: item.quantity,
     }));
 
+    // Identificar tipo de transacción
+    const transaction_type = "store_purchase";
+
     // Crear sesión de Stripe en modo payment
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -55,10 +58,16 @@ export default async function handler(req: any, res: any) {
       line_items: line_items,
       success_url: `${req.headers.origin}/success`,
       cancel_url: `${req.headers.origin}/cart`,
+      metadata: {
+        transaction_type: transaction_type,
+      },
     });
 
-    // Responder con la URL de la sesión
-    return res.status(200).json({ url: session.url });
+    // Responder con la URL de la sesión y el tipo de transacción
+    return res.status(200).json({ 
+      url: session.url,
+      transaction_type: transaction_type 
+    });
   } catch (error) {
     console.error("Stripe checkout error:", error);
     return res.status(500).json({ error: "Stripe checkout failed" });

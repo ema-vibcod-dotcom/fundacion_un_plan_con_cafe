@@ -18,6 +18,9 @@ export default async function handler(req: any, res: any) {
       return res.status(400).json({ error: "Invalid amount" });
     }
 
+    // Identificar tipo de transacción
+    const transaction_type = "donation";
+
     // Crear sesión de Stripe
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -36,10 +39,16 @@ export default async function handler(req: any, res: any) {
       ],
       success_url: `${req.headers.origin}/success`,
       cancel_url: `${req.headers.origin}/cancel`,
+      metadata: {
+        transaction_type: transaction_type,
+      },
     });
 
-    // Responder con la URL
-    return res.status(200).json({ url: session.url });
+    // Responder con la URL y el tipo de transacción
+    return res.status(200).json({ 
+      url: session.url,
+      transaction_type: transaction_type 
+    });
   } catch (error) {
     console.error("Stripe error:", error);
     return res.status(500).json({ error: "Stripe checkout failed" });
