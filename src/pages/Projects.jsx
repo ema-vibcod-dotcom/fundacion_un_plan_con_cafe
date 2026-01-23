@@ -91,7 +91,7 @@ export default function Projects() {
       ) : (
         proyectos.map((proyecto) => {
           const imageUrl = getProjectImage(proyecto);
-          const videoUrl = proyecto.attributes.videoCorto?.url || proyecto.attributes.video_corto;
+          const videoUrl = proyecto.attributes.videoUrl || proyecto.attributes.video_url || proyecto.attributes.videoCorto?.url || proyecto.attributes.video_corto;
           const estadoColors = {
             en_curso: 'bg-blue-100 text-blue-800',
             completado: 'bg-green-100 text-green-800',

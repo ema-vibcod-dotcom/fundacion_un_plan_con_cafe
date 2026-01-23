@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS proyectos (
   galeria_imagenes JSONB DEFAULT '[]'::jsonb,
   video_corto TEXT,
   image_url TEXT,
+  video_url TEXT,
   slug VARCHAR(255) UNIQUE NOT NULL,
   voluntarios INTEGER DEFAULT 0,
   porcentaje_financiado DECIMAL(5,2) DEFAULT 0,

@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useCart } from '../contexts/CartContext';
 import { getProductoById } from '../services/productoService';
-import VideoPreview from '../components/VideoPreview';
+import VideoPlayer from '../components/VideoPlayer';
 import VideoModal from '../components/VideoModal';
 
 export default function ProductStory() {
@@ -179,15 +179,14 @@ export default function ProductStory() {
             </div>
           )}
 
-          {/* Preview del video (opcional, debajo de la descripción) */}
+          {/* Video embed del producto - mostrar directamente el embed */}
           {videoUrl && (
             <div>
               <h2 className="text-xl font-semibold text-amber-900 mb-4">Video del Producto</h2>
               <div className="border border-gray-200 rounded-lg overflow-hidden">
-                <VideoPreview
+                <VideoPlayer
                   videoUrl={videoUrl}
                   title={`Video de ${attributes.nombre}`}
-                  onPlayClick={() => setShowVideoModal(true)}
                 />
               </div>
             </div>

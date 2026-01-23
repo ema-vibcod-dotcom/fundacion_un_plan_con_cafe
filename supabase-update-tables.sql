@@ -17,3 +17,7 @@ ADD COLUMN IF NOT EXISTS video_url TEXT;
 -- Agregar image_url a episodios_podcast
 ALTER TABLE episodios_podcast 
 ADD COLUMN IF NOT EXISTS image_url TEXT;
+
+-- Agregar video_url a proyectos (para videos de YouTube, Vimeo o MP4)
+ALTER TABLE proyectos 
+ADD COLUMN IF NOT EXISTS video_url TEXT;

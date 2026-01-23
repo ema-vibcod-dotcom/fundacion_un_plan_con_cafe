@@ -38,6 +38,8 @@ export async function getProyectos(params = {}) {
           fechaFinalizacion: proyecto.fecha_finalizacion,
           galeriaImagenes: proyecto.galeria_imagenes || [],
           videoCorto: proyecto.video_corto ? { url: proyecto.video_corto } : null,
+          videoUrl: proyecto.video_url || null,
+          video_url: proyecto.video_url || null, // Mantener ambos para compatibilidad
           imageUrl: proyecto.image_url || null,
           image_url: proyecto.image_url || null, // Mantener ambos para compatibilidad
           slug: proyecto.slug,
@@ -74,6 +76,8 @@ export async function getProyectoById(id) {
           fechaFinalizacion: proyecto.fecha_finalizacion,
           galeriaImagenes: proyecto.galeria_imagenes || [],
           videoCorto: proyecto.video_corto ? { url: proyecto.video_corto } : null,
+          videoUrl: proyecto.video_url || null,
+          video_url: proyecto.video_url || null, // Mantener ambos para compatibilidad
           imageUrl: proyecto.image_url || null,
           image_url: proyecto.image_url || null, // Mantener ambos para compatibilidad
           slug: proyecto.slug,
