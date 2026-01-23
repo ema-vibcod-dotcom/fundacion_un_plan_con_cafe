@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Donations from './pages/Donations';
 import Store from './pages/Store';
 import Podcast from './pages/Podcast';
+import Projects from './pages/Projects';
 import './App.css';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
             <Route path="/donate" element={<Donations />} />
             <Route path="/store" element={<Store />} />
             <Route path="/podcast" element={<Podcast />} />
+            <Route path="/projects" element={<Projects />} />
           </Routes>
         </Layout>
       </Router>
