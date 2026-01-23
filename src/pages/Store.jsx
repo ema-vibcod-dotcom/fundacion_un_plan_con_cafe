@@ -119,7 +119,7 @@ export default function Store() {
         </div>
       )}
 
-      <div className="bg-amber-50 border-l-4 border-amber-500 p-4 sm:p-6 rounded-r-lg mt-8">
+      <div className="bg-amber-50 border-l-4 border-amber-500 p-4 sm:p-6 rounded-r-lg mt-8 md:mb-12">
         <div className="flex items-start">
           <svg
             className="w-5 h-5 text-amber-600 mr-3 flex-shrink-0 mt-0.5"

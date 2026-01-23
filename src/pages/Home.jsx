@@ -149,7 +149,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-amber-50 rounded-xl p-5 sm:p-6 text-center border-2 border-amber-200 mb-6 sm:mb-8">
+      <section className="bg-amber-50 rounded-xl p-5 sm:p-6 text-center border-2 border-amber-200 mb-6 sm:mb-8 md:mb-12">
         <h2 className="text-xl font-bold text-amber-900 mb-3">
           {translate('cta_title')}
         </h2>

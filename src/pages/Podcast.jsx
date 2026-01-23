@@ -140,7 +140,7 @@ export default function Podcast() {
       )}
 
       {/* Información sobre el podcast */}
-      <div className="bg-amber-50 rounded-xl p-6 sm:p-8 border-l-4 border-amber-500">
+      <div className="bg-amber-50 rounded-xl p-6 sm:p-8 border-l-4 border-amber-500 md:mb-12">
         <h3 className="text-lg font-bold text-amber-900 mb-3">{translate('about_podcast_title')}</h3>
         <div className="space-y-3 text-gray-700 text-sm leading-relaxed">
           <p>

@@ -183,7 +183,7 @@ export default function Donations() {
         </p>
       </form>
 
-      <div className="bg-white rounded-xl shadow-md p-6">
+      <div className="bg-white rounded-xl shadow-md p-6 md:mb-12">
         <h2 className="text-lg font-bold text-amber-900 mb-3">
           {translate('donations_usage_title')}
         </h2>
