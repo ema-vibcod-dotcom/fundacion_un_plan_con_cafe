@@ -8,6 +8,7 @@ export default function AdminTransactions() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState('all'); // 'all', 'donation', 'store_purchase'
+  const [modeFilter, setModeFilter] = useState('all'); // 'all', 'test', 'live'
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
   const [lastId, setLastId] = useState(null);
@@ -15,7 +16,7 @@ export default function AdminTransactions() {
 
   useEffect(() => {
     loadTransactions();
-  }, [filter]);
+  }, [filter, modeFilter]);
 
   const loadTransactions = async (startingAfter = null) => {
     try {
@@ -24,6 +25,7 @@ export default function AdminTransactions() {
 
       const params = new URLSearchParams({
         filter: filter,
+        mode: modeFilter,
         limit: '100', // Fetch more to allow client-side pagination
       });
 
@@ -56,6 +58,12 @@ export default function AdminTransactions() {
 
   const handleFilterChange = (newFilter) => {
     setFilter(newFilter);
+    setCurrentPage(1);
+    setLastId(null);
+  };
+
+  const handleModeFilterChange = (newMode) => {
+    setModeFilter(newMode);
     setCurrentPage(1);
     setLastId(null);
   };
@@ -125,48 +133,109 @@ export default function AdminTransactions() {
   return (
     <div className="space-y-6">
       {/* Filtros */}
-      <div className="bg-gray-50 rounded-lg p-4">
-        <div className="flex flex-wrap gap-3">
-          <button
-            onClick={() => handleFilterChange('all')}
-            className={`px-4 py-2 rounded-lg font-semibold transition ${
-              filter === 'all'
-                ? 'bg-amber-900 text-white'
-                : 'bg-white text-gray-700 hover:bg-amber-50'
-            }`}
-          >
-            {language === 'es' ? 'Todas' : 'All'}
-          </button>
-          <button
-            onClick={() => handleFilterChange('donation')}
-            className={`px-4 py-2 rounded-lg font-semibold transition ${
-              filter === 'donation'
-                ? 'bg-amber-900 text-white'
-                : 'bg-white text-gray-700 hover:bg-amber-50'
-            }`}
-          >
-            {language === 'es' ? 'Donaciones' : 'Donations'}
-          </button>
-          <button
-            onClick={() => handleFilterChange('store_purchase')}
-            className={`px-4 py-2 rounded-lg font-semibold transition ${
-              filter === 'store_purchase'
-                ? 'bg-amber-900 text-white'
-                : 'bg-white text-gray-700 hover:bg-amber-50'
-            }`}
-          >
-            {language === 'es' ? 'Compras' : 'Purchases'}
-          </button>
+      <div className="bg-gray-50 rounded-lg p-4 space-y-4">
+        {/* Filtro por tipo de transacción */}
+        <div>
+          <p className="text-sm font-semibold text-gray-700 mb-2">
+            {language === 'es' ? 'Tipo de Transacción' : 'Transaction Type'}
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <button
+              onClick={() => handleFilterChange('all')}
+              className={`px-4 py-2 rounded-lg font-semibold transition ${
+                filter === 'all'
+                  ? 'bg-amber-900 text-white'
+                  : 'bg-white text-gray-700 hover:bg-amber-50'
+              }`}
+            >
+              {language === 'es' ? 'Todas' : 'All'}
+            </button>
+            <button
+              onClick={() => handleFilterChange('donation')}
+              className={`px-4 py-2 rounded-lg font-semibold transition ${
+                filter === 'donation'
+                  ? 'bg-amber-900 text-white'
+                  : 'bg-white text-gray-700 hover:bg-amber-50'
+              }`}
+            >
+              {language === 'es' ? 'Donaciones' : 'Donations'}
+            </button>
+            <button
+              onClick={() => handleFilterChange('store_purchase')}
+              className={`px-4 py-2 rounded-lg font-semibold transition ${
+                filter === 'store_purchase'
+                  ? 'bg-amber-900 text-white'
+                  : 'bg-white text-gray-700 hover:bg-amber-50'
+              }`}
+            >
+              {language === 'es' ? 'Compras' : 'Purchases'}
+            </button>
+          </div>
+        </div>
+
+        {/* Filtro por modo (prueba/real) */}
+        <div>
+          <p className="text-sm font-semibold text-gray-700 mb-2">
+            {language === 'es' ? 'Modo' : 'Mode'}
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <button
+              onClick={() => handleModeFilterChange('all')}
+              className={`px-4 py-2 rounded-lg font-semibold transition ${
+                modeFilter === 'all'
+                  ? 'bg-amber-900 text-white'
+                  : 'bg-white text-gray-700 hover:bg-amber-50'
+              }`}
+            >
+              {language === 'es' ? 'Todas' : 'All'}
+            </button>
+            <button
+              onClick={() => handleModeFilterChange('live')}
+              className={`px-4 py-2 rounded-lg font-semibold transition ${
+                modeFilter === 'live'
+                  ? 'bg-green-600 text-white'
+                  : 'bg-white text-gray-700 hover:bg-green-50'
+              }`}
+            >
+              {language === 'es' ? 'Reales' : 'Live'}
+            </button>
+            <button
+              onClick={() => handleModeFilterChange('test')}
+              className={`px-4 py-2 rounded-lg font-semibold transition ${
+                modeFilter === 'test'
+                  ? 'bg-yellow-600 text-white'
+                  : 'bg-white text-gray-700 hover:bg-yellow-50'
+              }`}
+            >
+              {language === 'es' ? 'Prueba' : 'Test'}
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Estadísticas */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
         <div className="bg-white rounded-lg shadow p-4">
           <p className="text-sm text-gray-600">
-            {language === 'es' ? 'Total de Transacciones' : 'Total Transactions'}
+            {language === 'es' ? 'Total' : 'Total'}
           </p>
           <p className="text-2xl font-bold text-amber-900">{transactions.length}</p>
+        </div>
+        <div className="bg-white rounded-lg shadow p-4">
+          <p className="text-sm text-gray-600">
+            {language === 'es' ? 'Reales' : 'Live'}
+          </p>
+          <p className="text-2xl font-bold text-green-600">
+            {transactions.filter((t) => t.is_test === false).length}
+          </p>
+        </div>
+        <div className="bg-white rounded-lg shadow p-4">
+          <p className="text-sm text-gray-600">
+            {language === 'es' ? 'Prueba' : 'Test'}
+          </p>
+          <p className="text-2xl font-bold text-yellow-600">
+            {transactions.filter((t) => t.is_test === true).length}
+          </p>
         </div>
         <div className="bg-white rounded-lg shadow p-4">
           <p className="text-sm text-gray-600">
@@ -219,15 +288,22 @@ export default function AdminTransactions() {
                 paginatedTransactions.map((transaction) => (
                   <tr key={transaction.id} className="hover:bg-amber-50 transition">
                     <td className="px-4 py-3 whitespace-nowrap">
-                      <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          transaction.transaction_type === 'donation'
-                            ? 'bg-green-100 text-green-800'
-                            : 'bg-blue-100 text-blue-800'
-                        }`}
-                      >
-                        {getTransactionTypeLabel(transaction.transaction_type)}
-                      </span>
+                      <div className="flex flex-col gap-1">
+                        <span
+                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                            transaction.transaction_type === 'donation'
+                              ? 'bg-green-100 text-green-800'
+                              : 'bg-blue-100 text-blue-800'
+                          }`}
+                        >
+                          {getTransactionTypeLabel(transaction.transaction_type)}
+                        </span>
+                        {transaction.is_test && (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                            {language === 'es' ? 'PRUEBA' : 'TEST'}
+                          </span>
+                        )}
+                      </div>
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
                       {transaction.donor_name ? (

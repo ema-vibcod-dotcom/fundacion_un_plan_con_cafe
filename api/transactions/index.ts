@@ -9,7 +9,7 @@ export default async function handler(req: any, res: any) {
   }
 
   try {
-    const { filter, limit = 100, starting_after } = req.query;
+    const { filter, limit = 100, starting_after, mode } = req.query;
 
     // Construir parámetros para listar sesiones de checkout
     const params: Stripe.Checkout.SessionListParams = {
@@ -19,6 +19,10 @@ export default async function handler(req: any, res: any) {
     if (starting_after) {
       params.starting_after = starting_after as string;
     }
+
+    // Filtrar por modo (test o live) si se especifica
+    // Nota: Stripe no tiene un parámetro directo para filtrar por livemode en sessions.list
+    // Por lo que filtraremos después de obtener los resultados
 
     // Listar todas las sesiones de checkout completadas
     const sessions = await stripe.checkout.sessions.list(params);
@@ -56,9 +60,18 @@ export default async function handler(req: any, res: any) {
     // Aplicar filtro por tipo de transacción si se especifica
     let filteredTransactions = transactions;
     if (filter && filter !== "all") {
-      filteredTransactions = transactions.filter(
+      filteredTransactions = filteredTransactions.filter(
         (tx) => tx.transaction_type === filter
       );
+    }
+
+    // Aplicar filtro por modo (test/live) si se especifica
+    if (mode && mode !== "all") {
+      if (mode === "test") {
+        filteredTransactions = filteredTransactions.filter((tx) => tx.is_test === true);
+      } else if (mode === "live") {
+        filteredTransactions = filteredTransactions.filter((tx) => tx.is_test === false);
+      }
     }
 
     // Ordenar por fecha (más reciente primero)

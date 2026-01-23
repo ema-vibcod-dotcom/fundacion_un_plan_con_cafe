@@ -185,6 +185,8 @@ export const TRANSLATIONS = {
     admin_projects_title: 'Gestión de Proyectos',
     admin_products_title: 'Gestión de Productos',
     admin_podcast_title: 'Gestión de Episodios',
+    admin_transactions_test_mode: 'PRUEBA',
+    admin_transactions_live_mode: 'REAL',
     admin_transactions_title: 'Historial de Transacciones',
   },
   en: {
@@ -372,6 +374,8 @@ export const TRANSLATIONS = {
     admin_tab_podcast: 'Podcast',
     admin_tab_transactions: 'Transactions',
     admin_transactions_title: 'Transaction History',
+    admin_transactions_test_mode: 'TEST',
+    admin_transactions_live_mode: 'LIVE',
     admin_projects_title: 'Project Management',
     admin_products_title: 'Product Management',
     admin_podcast_title: 'Episode Management',
