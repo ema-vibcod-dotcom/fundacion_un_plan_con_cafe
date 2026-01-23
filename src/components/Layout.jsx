@@ -9,7 +9,7 @@ export default function Layout({ children }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Verificar si estamos en mobile y si hay algún problema
+  // Verificar si estamos en mobile y si hay algún problema (solo para rutas inválidas)
   useEffect(() => {
     // Detectar si es mobile
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -17,16 +17,35 @@ export default function Layout({ children }) {
     ) || window.innerWidth < 768;
 
     if (isMobile) {
-      // Si estamos en mobile y la ruta no es válida o hay algún problema,
-      // verificar después de un breve delay si el contenido se renderizó
+      // Solo verificar si estamos en una ruta que no debería estar vacía
+      // Las rutas válidas son: /, /donate, /store, /product/:id, /cart, /podcast, /projects
+      const validRoutes = ['/', '/donate', '/store', '/cart', '/podcast', '/projects'];
+      const isProductRoute = location.pathname.startsWith('/product/');
+      const isValidRoute = validRoutes.includes(location.pathname) || isProductRoute;
+
+      if (!isValidRoute) {
+        // Si la ruta no es válida, redirigir inmediatamente a home
+        console.warn('Ruta inválida detectada en mobile, redirigiendo a home');
+        navigate('/', { replace: true });
+        return;
+      }
+
+      // Solo verificar contenido vacío para rutas válidas después de un delay más largo
+      // Esto da tiempo a que el contenido se cargue
       const timer = setTimeout(() => {
         const mainContent = document.getElementById('main-content');
-        // Si el contenido principal está vacío o tiene problemas, redirigir a home
-        if (mainContent && mainContent.children.length === 0 && location.pathname !== '/') {
-          console.warn('Contenido vacío detectado en mobile, redirigiendo a home');
+        // Solo redirigir si el contenido está completamente vacío (sin ningún elemento)
+        // y no estamos en home
+        if (
+          mainContent && 
+          mainContent.children.length === 0 && 
+          location.pathname !== '/' &&
+          !mainContent.textContent?.trim()
+        ) {
+          console.warn('Contenido vacío detectado en mobile después de timeout, redirigiendo a home');
           navigate('/', { replace: true });
         }
-      }, 1000);
+      }, 3000); // Aumentado a 3 segundos para dar más tiempo
 
       return () => clearTimeout(timer);
     }

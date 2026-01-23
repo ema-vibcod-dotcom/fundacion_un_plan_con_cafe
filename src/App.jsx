@@ -18,11 +18,11 @@ import './App.css';
 
 function App() {
   return (
-    <ErrorBoundary>
-      <LanguageProvider>
-        <AdminAuthProvider>
-          <CartProvider>
-            <Router>
+    <LanguageProvider>
+      <AdminAuthProvider>
+        <CartProvider>
+          <Router>
+            <ErrorBoundary>
               <Routes>
                 {/* Rutas públicas con Layout */}
                 <Route
@@ -54,11 +54,11 @@ function App() {
                   }
                 />
               </Routes>
-            </Router>
-          </CartProvider>
-        </AdminAuthProvider>
-      </LanguageProvider>
-    </ErrorBoundary>
+            </ErrorBoundary>
+          </Router>
+        </CartProvider>
+      </AdminAuthProvider>
+    </LanguageProvider>
   );
 }
 
