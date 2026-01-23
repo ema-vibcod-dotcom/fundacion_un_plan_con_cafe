@@ -3,6 +3,7 @@ import { getProductos } from '../../services/productoService';
 import { useLanguage } from '../../contexts/LanguageContext';
 import ImageUrlInput from './ImageUrlInput';
 import VideoUrlInput from '../VideoUrlInput';
+import VideoPlayer from '../VideoPlayer';
 
 export default function AdminProducts() {
   const [productos, setProductos] = useState([]);
@@ -172,51 +173,185 @@ export default function AdminProducts() {
   );
 }
 
+// Componente compacto de video para el listado
+function CompactVideoPlayer({ videoUrl, title }) {
+  // Extraer ID de YouTube
+  const getYouTubeId = (url) => {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    return match && match[2].length === 11 ? match[2] : null;
+  };
+
+  // Extraer ID de Vimeo
+  const getVimeoId = (url) => {
+    const regExp = /(?:vimeo)\.com.*(?:videos|video|channels|)\/([\d]+)/i;
+    const match = url.match(regExp);
+    return match ? match[1] : null;
+  };
+
+  // Verificar si es MP4 directo
+  const isMP4 = /\.mp4(\?.*)?$/i.test(videoUrl);
+
+  // YouTube
+  if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
+    const videoId = getYouTubeId(videoUrl);
+    if (videoId) {
+      return (
+        <div className="relative w-full" style={{ paddingBottom: '56.25%', height: '0' }}>
+          <iframe
+            className="absolute top-0 left-0 w-full h-full rounded-lg"
+            src={`https://www.youtube.com/embed/${videoId}?autoplay=0`}
+            title={title}
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
+      );
+    }
+  }
+
+  // Vimeo
+  if (videoUrl.includes('vimeo.com')) {
+    const videoId = getVimeoId(videoUrl);
+    if (videoId) {
+      return (
+        <div className="relative w-full" style={{ paddingBottom: '56.25%', height: '0' }}>
+          <iframe
+            className="absolute top-0 left-0 w-full h-full rounded-lg"
+            src={`https://player.vimeo.com/video/${videoId}?autoplay=0`}
+            title={title}
+            frameBorder="0"
+            allow="fullscreen; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
+      );
+    }
+  }
+
+  // MP4 directo
+  if (isMP4) {
+    return (
+      <video
+        src={videoUrl}
+        controls
+        className="w-full rounded-lg"
+        preload="metadata"
+        style={{ maxHeight: '180px' }}
+      >
+        Tu navegador no soporta videos.
+      </video>
+    );
+  }
+
+  return (
+    <div className="p-3 text-center text-gray-400 text-xs">
+      URL de video no reconocida
+    </div>
+  );
+}
+
 function ProductCard({ producto, onEdit, onDelete, onToggleActive }) {
   const { attributes } = producto;
   const stockBajo = attributes.stock < 10;
+  
+  // Obtener imagen principal
+  const getProductImage = () => {
+    if (attributes.imageUrl || attributes.image_url) {
+      return attributes.imageUrl || attributes.image_url;
+    }
+    if (attributes.galeriaImagenes && attributes.galeriaImagenes.length > 0) {
+      return typeof attributes.galeriaImagenes[0] === 'string' 
+        ? attributes.galeriaImagenes[0]
+        : attributes.galeriaImagenes[0].url;
+    }
+    return null;
+  };
+
+  const imageUrl = getProductImage();
+  const videoUrl = attributes.videoUrl || attributes.video_url;
 
   return (
     <div className={`bg-white border-2 rounded-lg p-4 ${attributes.activo ? 'border-green-200' : 'border-gray-200 opacity-60'}`}>
-      <div className="flex justify-between items-start gap-4">
-        <div className="flex-1">
-          <div className="flex items-center gap-2 mb-2">
-            <h3 className="text-lg font-semibold text-amber-900">{attributes.nombre}</h3>
-            <span className={`px-2 py-1 text-xs rounded ${attributes.activo ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'}`}>
-              {attributes.activo ? 'Activo' : 'Inactivo'}
-            </span>
-            {stockBajo && (
-              <span className="px-2 py-1 text-xs rounded bg-red-100 text-red-800">
-                Stock Bajo
-              </span>
+      <div className="flex flex-col md:flex-row gap-4">
+        {/* Sección de previsualización de media */}
+        {(imageUrl || videoUrl) && (
+          <div className="md:w-64 lg:w-80 flex-shrink-0 space-y-3">
+            {/* Previsualización de imagen */}
+            {imageUrl && (
+              <div className="relative">
+                <p className="text-xs text-gray-500 mb-1 font-medium">Imagen:</p>
+                <div className="border border-gray-200 rounded-lg overflow-hidden bg-gray-50">
+                  <img
+                    src={imageUrl}
+                    alt={attributes.nombre}
+                    className="w-full h-32 object-cover"
+                    loading="lazy"
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      e.target.parentElement.innerHTML = '<div class="p-4 text-center text-gray-400 text-xs">Imagen no disponible</div>';
+                    }}
+                  />
+                </div>
+              </div>
+            )}
+            
+            {/* Previsualización de video */}
+            {videoUrl && (
+              <div>
+                <p className="text-xs text-gray-500 mb-1 font-medium">Video:</p>
+                <div className="border border-gray-200 rounded-lg overflow-hidden bg-gray-50">
+                  <CompactVideoPlayer videoUrl={videoUrl} title={attributes.nombre} />
+                </div>
+              </div>
             )}
           </div>
-          <p className="text-gray-600 text-sm mb-2">{attributes.descripcionCorta || 'Sin descripción'}</p>
-          <div className="flex gap-4 text-sm">
-            <span className="text-amber-900 font-semibold">${attributes.precio?.toFixed(2) || '0.00'} USD</span>
-            <span className="text-gray-600">Stock: {attributes.stock || 0}</span>
-            <span className="text-gray-600">Por: {attributes.nombreCreador || 'N/A'}</span>
+        )}
+
+        {/* Sección de información */}
+        <div className="flex-1 flex flex-col md:flex-row justify-between gap-4">
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-2 flex-wrap">
+              <h3 className="text-lg font-semibold text-amber-900">{attributes.nombre}</h3>
+              <span className={`px-2 py-1 text-xs rounded ${attributes.activo ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'}`}>
+                {attributes.activo ? 'Activo' : 'Inactivo'}
+              </span>
+              {stockBajo && (
+                <span className="px-2 py-1 text-xs rounded bg-red-100 text-red-800">
+                  Stock Bajo
+                </span>
+              )}
+            </div>
+            <p className="text-gray-600 text-sm mb-2">{attributes.descripcionCorta || 'Sin descripción'}</p>
+            <div className="flex flex-wrap gap-4 text-sm">
+              <span className="text-amber-900 font-semibold">${attributes.precio?.toFixed(2) || '0.00'} USD</span>
+              <span className="text-gray-600">Stock: {attributes.stock || 0}</span>
+              <span className="text-gray-600">Por: {attributes.nombreCreador || 'N/A'}</span>
+            </div>
           </div>
-        </div>
-        <div className="flex flex-col gap-2">
-          <button
-            onClick={() => onToggleActive(producto)}
-            className={`px-3 py-1 text-sm rounded transition ${attributes.activo ? 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200' : 'bg-green-100 text-green-800 hover:bg-green-200'}`}
-          >
-            {attributes.activo ? 'Desactivar' : 'Activar'}
-          </button>
-          <button
-            onClick={() => onEdit(producto)}
-            className="px-3 py-1 text-sm bg-blue-100 text-blue-800 rounded hover:bg-blue-200 transition"
-          >
-            Editar
-          </button>
-          <button
-            onClick={() => onDelete(producto.id)}
-            className="px-3 py-1 text-sm bg-red-100 text-red-800 rounded hover:bg-red-200 transition"
-          >
-            Eliminar
-          </button>
+          
+          {/* Botones de acción */}
+          <div className="flex flex-col gap-2 md:min-w-[120px]">
+            <button
+              onClick={() => onToggleActive(producto)}
+              className={`px-3 py-1 text-sm rounded transition ${attributes.activo ? 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200' : 'bg-green-100 text-green-800 hover:bg-green-200'}`}
+            >
+              {attributes.activo ? 'Desactivar' : 'Activar'}
+            </button>
+            <button
+              onClick={() => onEdit(producto)}
+              className="px-3 py-1 text-sm bg-blue-100 text-blue-800 rounded hover:bg-blue-200 transition"
+            >
+              Editar
+            </button>
+            <button
+              onClick={() => onDelete(producto.id)}
+              className="px-3 py-1 text-sm bg-red-100 text-red-800 rounded hover:bg-red-200 transition"
+            >
+              Eliminar
+            </button>
+          </div>
         </div>
       </div>
     </div>

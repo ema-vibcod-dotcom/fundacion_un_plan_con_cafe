@@ -9,6 +9,7 @@ export default function ImageUrlInput({ value, onChange, label = 'URL de Imagen'
   const [errorMessage, setErrorMessage] = useState('');
 
   // Validar que la URL sea una imagen válida (jpg, jpeg, png, webp)
+  // Soporta URLs de Google Imágenes y otros servicios con parámetros
   const validateImageUrl = (url) => {
     if (!url || url.trim() === '') {
       setIsValid(true);
@@ -18,21 +19,36 @@ export default function ImageUrlInput({ value, onChange, label = 'URL de Imagen'
 
     try {
       // Verificar que sea una URL válida
-      new URL(url);
+      const urlObj = new URL(url);
       
-      // Verificar extensión de imagen
-      const imageExtensions = /\.(jpg|jpeg|png|webp)(\?.*)?$/i;
-      const isValidExtension = imageExtensions.test(url);
+      // URLs de Google Imágenes (googleusercontent.com, gstatic.com)
+      const isGoogleImage = urlObj.hostname.includes('googleusercontent.com') || 
+                           urlObj.hostname.includes('gstatic.com') ||
+                           urlObj.hostname.includes('google.com');
       
-      if (!isValidExtension) {
-        setIsValid(false);
-        setErrorMessage('La URL debe ser una imagen válida (jpg, jpeg, png, webp)');
-        return false;
+      // Verificar extensión de imagen en la URL
+      const imageExtensions = /\.(jpg|jpeg|png|webp|gif)(\?.*)?$/i;
+      const hasImageExtension = imageExtensions.test(url);
+      
+      // Si es Google Imágenes o tiene extensión de imagen, es válida
+      if (isGoogleImage || hasImageExtension) {
+        setIsValid(true);
+        setErrorMessage('');
+        return true;
       }
       
-      setIsValid(true);
-      setErrorMessage('');
-      return true;
+      // Si no tiene extensión pero parece una URL de imagen (contiene parámetros comunes)
+      // Permitimos URLs que puedan ser imágenes pero sin extensión visible
+      const commonImageParams = /[?&](url|image|img|photo|picture|src)=/i;
+      if (commonImageParams.test(url)) {
+        setIsValid(true);
+        setErrorMessage('');
+        return true;
+      }
+      
+      setIsValid(false);
+      setErrorMessage('La URL debe ser una imagen válida (jpg, jpeg, png, webp) o una URL de Google Imágenes');
+      return false;
     } catch (error) {
       setIsValid(false);
       setErrorMessage('Por favor ingresa una URL válida');
@@ -71,7 +87,7 @@ export default function ImageUrlInput({ value, onChange, label = 'URL de Imagen'
         }`}
       />
       <p className="mt-1.5 text-xs sm:text-sm text-gray-500">
-        Formatos soportados: JPG, JPEG, PNG, WEBP
+        Formatos soportados: JPG, JPEG, PNG, WEBP. También puedes pegar URLs de Google Imágenes directamente.
       </p>
       {errorMessage && (
         <p className="mt-1 text-xs sm:text-sm text-red-600">{errorMessage}</p>
