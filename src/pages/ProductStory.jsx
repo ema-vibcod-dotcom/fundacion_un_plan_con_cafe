@@ -122,17 +122,6 @@ export default function ProductStory() {
           </div>
         )}
 
-        {/* Preview del video - debajo de la imagen o en lugar de ella */}
-        {videoUrl && (
-          <div className={imageUrl ? "px-6 md:px-8 pt-6" : ""}>
-            <VideoPreview
-              videoUrl={videoUrl}
-              title={`Video de ${attributes.nombre}`}
-              onPlayClick={() => setShowVideoModal(true)}
-            />
-          </div>
-        )}
-
         <div className="p-6 md:p-8 space-y-6">
           {/* Información principal */}
           <div>

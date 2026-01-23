@@ -1,9 +1,14 @@
 /**
  * Componente para mostrar preview de video con thumbnail y botón de play
  * Al hacer click, abre el video en un modal
+ * Detecta automáticamente YouTube, Vimeo y MP4 según la URL proporcionada
  */
 
+import { useState } from 'react';
+
 export default function VideoPreview({ videoUrl, title, onPlayClick }) {
+  const [thumbnailError, setThumbnailError] = useState(false);
+
   if (!videoUrl) return null;
 
   // Extraer ID de YouTube
@@ -35,13 +40,12 @@ export default function VideoPreview({ videoUrl, title, onPlayClick }) {
     if (videoUrl.includes('vimeo.com')) {
       const videoId = getVimeoId(videoUrl);
       if (videoId) {
-        // Vimeo requiere una llamada a su API, pero podemos usar un placeholder
-        // o intentar con una URL estándar
+        // Usar servicio de thumbnails de Vimeo
         return `https://vumbnail.com/${videoId}.jpg`;
       }
     }
 
-    // Para MP4, no hay thumbnail automático, usar un placeholder
+    // Para MP4, no hay thumbnail automático
     if (isMP4) {
       return null;
     }
@@ -50,6 +54,7 @@ export default function VideoPreview({ videoUrl, title, onPlayClick }) {
   };
 
   const thumbnail = getThumbnail();
+  const showPlaceholder = !thumbnail || thumbnailError;
 
   const handleClick = () => {
     if (onPlayClick) {
@@ -63,26 +68,13 @@ export default function VideoPreview({ videoUrl, title, onPlayClick }) {
       onClick={handleClick}
     >
       {/* Thumbnail o placeholder */}
-      {thumbnail ? (
+      {!showPlaceholder ? (
         <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
           <img
             src={thumbnail}
             alt={title || 'Video preview'}
             className="absolute top-0 left-0 w-full h-full object-cover"
-            onError={(e) => {
-              // Si el thumbnail falla, mostrar placeholder
-              e.target.style.display = 'none';
-              e.target.parentElement.innerHTML = `
-                <div class="absolute inset-0 bg-gradient-to-br from-amber-900 to-amber-800 flex items-center justify-center">
-                  <div class="text-center text-white">
-                    <svg class="w-16 h-16 mx-auto mb-2" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M8 5v14l11-7z"/>
-                    </svg>
-                    <p class="text-sm font-semibold">${title || 'Video'}</p>
-                  </div>
-                </div>
-              `;
-            }}
+            onError={() => setThumbnailError(true)}
           />
           {/* Overlay oscuro con título */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end">
@@ -92,7 +84,7 @@ export default function VideoPreview({ videoUrl, title, onPlayClick }) {
           </div>
         </div>
       ) : (
-        // Placeholder si no hay thumbnail
+        // Placeholder si no hay thumbnail o falló la carga
         <div className="relative w-full bg-gradient-to-br from-amber-900 to-amber-800" style={{ paddingBottom: '56.25%' }}>
           <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
             <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mb-3 group-hover:bg-white/30 transition">
