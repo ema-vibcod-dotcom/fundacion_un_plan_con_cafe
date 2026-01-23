@@ -6,7 +6,7 @@ export default function Home() {
   const { translate } = useLanguage();
 
   return (
-    <div className="w-full max-w-md mx-auto space-y-6">
+    <div className="w-full max-w-md md:max-w-2xl lg:max-w-3xl mx-auto space-y-6 px-4 md:px-6">
       {/* Logo Section */}
       <div className="flex justify-center py-2">
         <img 
@@ -38,12 +38,12 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-white rounded-xl shadow-md p-6">
-        <div className="flex items-start space-x-4">
+      <section className="bg-white rounded-xl shadow-md p-6 md:p-8">
+        <div className="flex items-start space-x-4 md:space-x-6">
           <div className="flex-shrink-0">
-            <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center">
+            <div className="w-12 h-12 md:w-14 md:h-14 bg-amber-100 rounded-full flex items-center justify-center">
               <svg
-                className="w-6 h-6 text-amber-900"
+                className="w-6 h-6 md:w-7 md:h-7 text-amber-900"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -59,15 +59,15 @@ export default function Home() {
             </div>
           </div>
           <div className="flex-1">
-            <h2 className="text-xl font-bold text-amber-900 mb-2">
+            <h2 className="text-xl md:text-2xl font-bold text-amber-900 mb-2">
               {translate('projects_title')}
             </h2>
-            <p className="text-gray-700 mb-4 leading-relaxed text-sm">
+            <p className="text-gray-700 mb-4 leading-relaxed text-sm md:text-base">
               {translate('projects_card_description')}
             </p>
             <Link
               to="/projects"
-              className="inline-block text-amber-900 font-semibold hover:text-amber-800 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 rounded px-4 py-2 transition-colors text-sm"
+              className="inline-block text-amber-900 font-semibold hover:text-amber-800 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 rounded px-4 py-2 transition-colors text-sm md:text-base"
             >
               {translate('view_projects')}
             </Link>
@@ -75,12 +75,12 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-white rounded-xl shadow-md p-6">
-        <div className="flex items-start space-x-4">
+      <section className="bg-white rounded-xl shadow-md p-6 md:p-8">
+        <div className="flex items-start space-x-4 md:space-x-6">
           <div className="flex-shrink-0">
-            <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center">
+            <div className="w-12 h-12 md:w-14 md:h-14 bg-amber-100 rounded-full flex items-center justify-center">
               <svg
-                className="w-6 h-6 text-amber-900"
+                className="w-6 h-6 md:w-7 md:h-7 text-amber-900"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -96,15 +96,15 @@ export default function Home() {
             </div>
           </div>
           <div className="flex-1">
-            <h2 className="text-xl font-bold text-amber-900 mb-2">
+            <h2 className="text-xl md:text-2xl font-bold text-amber-900 mb-2">
               {translate('products_title')}
             </h2>
-            <p className="text-gray-700 mb-4 leading-relaxed text-sm">
+            <p className="text-gray-700 mb-4 leading-relaxed text-sm md:text-base">
               {translate('products_description')}
             </p>
             <Link
               to="/store"
-              className="inline-block text-amber-900 font-semibold hover:text-amber-800 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 rounded px-4 py-2 transition-colors text-sm"
+              className="inline-block text-amber-900 font-semibold hover:text-amber-800 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 rounded px-4 py-2 transition-colors text-sm md:text-base"
             >
               {translate('view_products')}
             </Link>
@@ -112,12 +112,12 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-white rounded-xl shadow-md p-6">
-        <div className="flex items-start space-x-4">
+      <section className="bg-white rounded-xl shadow-md p-6 md:p-8">
+        <div className="flex items-start space-x-4 md:space-x-6">
           <div className="flex-shrink-0">
-            <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center">
+            <div className="w-12 h-12 md:w-14 md:h-14 bg-amber-100 rounded-full flex items-center justify-center">
               <svg
-                className="w-6 h-6 text-amber-900"
+                className="w-6 h-6 md:w-7 md:h-7 text-amber-900"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -133,15 +133,15 @@ export default function Home() {
             </div>
           </div>
           <div className="flex-1">
-            <h2 className="text-xl font-bold text-amber-900 mb-2">
+            <h2 className="text-xl md:text-2xl font-bold text-amber-900 mb-2">
               {translate('podcast_title')}
             </h2>
-            <p className="text-gray-700 mb-4 leading-relaxed text-sm">
+            <p className="text-gray-700 mb-4 leading-relaxed text-sm md:text-base">
               {translate('podcast_description')}
             </p>
             <Link
               to="/podcast"
-              className="inline-block text-amber-900 font-semibold hover:text-amber-800 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 rounded px-4 py-2 transition-colors text-sm"
+              className="inline-block text-amber-900 font-semibold hover:text-amber-800 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 rounded px-4 py-2 transition-colors text-sm md:text-base"
             >
               {translate('listen_podcast')}
             </Link>
@@ -149,16 +149,16 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-amber-50 rounded-xl p-5 sm:p-6 text-center border-2 border-amber-200 mb-6 sm:mb-8 md:mb-12">
-        <h2 className="text-xl font-bold text-amber-900 mb-3">
+      <section className="bg-amber-50 rounded-xl p-5 sm:p-6 md:p-8 text-center border-2 border-amber-200 mb-6 sm:mb-8 md:mb-12">
+        <h2 className="text-xl md:text-2xl font-bold text-amber-900 mb-3">
           {translate('cta_title')}
         </h2>
-        <p className="text-gray-700 mb-5 sm:mb-6 text-sm leading-relaxed px-2">
+        <p className="text-gray-700 mb-5 sm:mb-6 md:mb-8 text-sm md:text-base leading-relaxed px-2 md:px-4">
           {translate('cta_description')}
         </p>
         <Link
           to="/donate"
-          className="inline-block bg-amber-900 text-white font-bold px-8 py-3 rounded-lg shadow-md hover:bg-amber-800 active:bg-amber-950 focus:outline-none focus:ring-4 focus:ring-amber-300 transition-all duration-200 w-full sm:w-auto max-w-xs"
+          className="inline-block bg-amber-900 text-white font-bold px-8 py-3 md:px-10 md:py-4 rounded-lg shadow-md hover:bg-amber-800 active:bg-amber-950 focus:outline-none focus:ring-4 focus:ring-amber-300 transition-all duration-200 w-full sm:w-auto max-w-xs md:max-w-sm text-base md:text-lg"
         >
           {translate('donate_now')}
         </Link>

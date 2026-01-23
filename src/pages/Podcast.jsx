@@ -8,7 +8,7 @@ export default function Podcast() {
   );
 
   return (
-    <div className="w-full max-w-3xl mx-auto space-y-6">
+    <div className="w-full max-w-md md:max-w-2xl lg:max-w-4xl mx-auto space-y-6 px-4 md:px-6">
       {/* Header */}
       <div className="text-center">
         <h1 className="text-2xl sm:text-3xl font-bold text-amber-900 mb-3">{translate('podcast_title')}</h1>

@@ -79,7 +79,7 @@ export default function Donations() {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto space-y-6">
+    <div className="w-full max-w-md md:max-w-2xl lg:max-w-3xl mx-auto space-y-6 px-4 md:px-6">
       <div className="text-center">
         <h1 className="text-2xl sm:text-3xl font-bold text-amber-900 mb-2">
           {translate('donations_title')}
@@ -97,7 +97,7 @@ export default function Donations() {
         />
       )}
 
-      <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-md p-6 space-y-5">
+      <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-md p-6 md:p-8 space-y-5 md:space-y-6">
         <div>
           <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
             {translate('name_label')} <span className="text-gray-500 text-xs">({translate('name_optional')})</span>
@@ -183,11 +183,11 @@ export default function Donations() {
         </p>
       </form>
 
-      <div className="bg-white rounded-xl shadow-md p-6 md:mb-12">
-        <h2 className="text-lg font-bold text-amber-900 mb-3">
+      <div className="bg-white rounded-xl shadow-md p-6 md:p-8 md:mb-12">
+        <h2 className="text-lg md:text-xl font-bold text-amber-900 mb-3 md:mb-4">
           {translate('donations_usage_title')}
         </h2>
-        <ul className="space-y-2 text-sm text-gray-700">
+        <ul className="space-y-2 md:space-y-3 text-sm md:text-base text-gray-700">
           <li className="flex items-start">
             <svg
               className="w-5 h-5 text-amber-600 mr-2 flex-shrink-0 mt-0.5"
