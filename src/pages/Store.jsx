@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { getProductosDisponibles } from '../services/productoService';
 import VideoPlayer from '../components/VideoPlayer';
 
 export default function Store() {
   const { translate } = useLanguage();
+  const navigate = useNavigate();
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -171,8 +173,11 @@ export default function Store() {
 
                   {/* Botón de compra */}
                   {isDisponible && (
-                    <button className="w-full bg-amber-900 text-white py-2 rounded-lg font-semibold hover:bg-amber-800 transition text-sm">
-                      Comprar ahora
+                    <button
+                      onClick={() => navigate(`/product/${producto.id}`)}
+                      className="w-full bg-amber-900 text-white py-2 rounded-lg font-semibold hover:bg-amber-800 transition text-sm"
+                    >
+                      Ver Detalles
                     </button>
                   )}
                 </div>
