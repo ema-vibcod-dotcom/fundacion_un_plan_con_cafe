@@ -21,7 +21,7 @@ export default function Layout({ children }) {
       <main
         id="main-content"
         role="main"
-        className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 pb-20 sm:pb-24 md:pb-8"
+        className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 pb-20 sm:pb-24 md:pb-12"
       >
         {children}
       </main>

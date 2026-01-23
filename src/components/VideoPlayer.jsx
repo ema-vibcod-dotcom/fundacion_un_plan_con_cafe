@@ -1,9 +1,10 @@
 /**
  * Componente para mostrar videos de YouTube, Vimeo o MP4 directos
  * Responsive y sin autoplay
+ * Si la URL no es reconocida, muestra un botón para abrir en modal
  */
 
-export default function VideoPlayer({ videoUrl, title = 'Video del producto' }) {
+export default function VideoPlayer({ videoUrl, title = 'Video del producto', onVideoClick }) {
   if (!videoUrl) return null;
 
   // Extraer ID de YouTube
@@ -82,11 +83,42 @@ export default function VideoPlayer({ videoUrl, title = 'Video del producto' }) 
     );
   }
 
-  // Si no coincide con ningún formato conocido, mostrar un mensaje
+  // Si no coincide con ningún formato conocido, mostrar botón para abrir en modal
+  // Intentar detectar si es una URL válida aunque no sea reconocida
+  const isValidUrl = (url) => {
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  if (isValidUrl(videoUrl)) {
+    // Si es una URL válida pero no reconocida, mostrar botón para abrir en modal
+    return (
+      <div className="w-full">
+        <button
+          onClick={() => onVideoClick && onVideoClick(videoUrl, title)}
+          className="w-full p-4 bg-amber-900 text-white rounded-lg hover:bg-amber-800 transition flex items-center justify-center gap-2 font-semibold"
+        >
+          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+          Ver Video
+        </button>
+        <p className="text-xs text-gray-500 mt-2 text-center">
+          Haz clic para abrir el video en una ventana emergente
+        </p>
+      </div>
+    );
+  }
+
+  // Si no es una URL válida, mostrar mensaje de error
   return (
     <div className="w-full p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
       <p className="text-sm text-yellow-800">
-        URL de video no reconocida. Por favor verifica que sea de YouTube, Vimeo o un archivo MP4 directo.
+        URL de video no válida. Por favor verifica que sea una URL válida de YouTube, Vimeo o un archivo MP4 directo.
       </p>
     </div>
   );

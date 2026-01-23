@@ -65,6 +65,7 @@ export default function AdminProjects() {
         fecha_finalizacion: projectData.fechaFinalizacion || null,
         galeria_imagenes: projectData.galeriaImagenes || [],
         video_corto: projectData.videoCorto || null,
+        image_url: projectData.imageUrl || null,
         slug: projectData.slug || projectData.titulo.toLowerCase().replace(/\s+/g, '-'),
         voluntarios: projectData.voluntarios || 0,
         porcentaje_financiado: projectData.porcentajeFinanciado || 0,

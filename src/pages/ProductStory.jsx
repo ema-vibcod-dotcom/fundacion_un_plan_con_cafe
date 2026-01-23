@@ -198,6 +198,9 @@ export default function ProductStory() {
                 <VideoPlayer
                   videoUrl={videoUrl}
                   title={`Video de ${attributes.nombre}`}
+                  onVideoClick={(url, title) => {
+                    setShowVideoModal(true);
+                  }}
                 />
               </div>
             </div>
