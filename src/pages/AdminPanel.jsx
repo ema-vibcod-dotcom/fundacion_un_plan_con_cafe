@@ -5,6 +5,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import AdminProjects from '../components/admin/AdminProjects';
 import AdminProducts from '../components/admin/AdminProducts';
 import AdminPodcast from '../components/admin/AdminPodcast';
+import AdminTransactions from '../components/admin/AdminTransactions';
 
 export default function AdminPanel() {
   const [activeTab, setActiveTab] = useState('projects');
@@ -146,6 +147,7 @@ export default function AdminPanel() {
             {activeTab === 'projects' && <AdminProjects />}
             {activeTab === 'products' && <AdminProducts />}
             {activeTab === 'podcast' && <AdminPodcast />}
+            {activeTab === 'transactions' && <AdminTransactions />}
           </div>
         </div>
       </div>

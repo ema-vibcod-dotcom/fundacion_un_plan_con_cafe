@@ -1,12 +1,14 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useCart } from '../contexts/CartContext';
 import { apiFetch } from '../services/apiConfig';
+import ThankYouBanner from '../components/ThankYouBanner';
 
 export default function Cart() {
   const { translate } = useLanguage();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const {
     cartItems,
     removeFromCart,
@@ -18,6 +20,30 @@ export default function Cart() {
 
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState(null);
+  const [showThankYou, setShowThankYou] = useState(false);
+  const [transactionType, setTransactionType] = useState(null);
+
+  // Detectar si venimos de un pago exitoso
+  useEffect(() => {
+    const paymentSuccess = searchParams.get('payment_success');
+    const txType = searchParams.get('transaction_type');
+
+    if (paymentSuccess === 'true' && txType) {
+      setTransactionType(txType);
+      setShowThankYou(true);
+      
+      // Limpiar el carrito si fue una compra
+      if (txType === 'store_purchase') {
+        clearCart();
+      }
+
+      // Limpiar los parámetros de la URL sin recargar
+      const newSearchParams = new URLSearchParams(searchParams);
+      newSearchParams.delete('payment_success');
+      newSearchParams.delete('transaction_type');
+      setSearchParams(newSearchParams, { replace: true });
+    }
+  }, [searchParams, setSearchParams, clearCart]);
 
   const handleCheckout = async () => {
     if (cartItems.length === 0) {
@@ -109,6 +135,17 @@ export default function Cart() {
 
   return (
     <div className="w-full max-w-4xl mx-auto px-4 py-6 space-y-6">
+      {/* Banner de agradecimiento */}
+      {showThankYou && (
+        <ThankYouBanner
+          transactionType={transactionType}
+          onClose={() => setShowThankYou(false)}
+        />
+      )}
+
+      {/* Espaciador para el banner fijo (header + banner) */}
+      {showThankYou && <div className="h-32"></div>}
+
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-amber-900">Carrito de Compras</h1>
         <button

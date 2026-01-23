@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import FlashMessage from '../components/FlashMessage';
+import ThankYouBanner from '../components/ThankYouBanner';
 import { useLanguage } from '../contexts/LanguageContext';
 import { apiFetch } from '../services/apiConfig';
 
 export default function Donations() {
   const { translate, language } = useLanguage();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [formData, setFormData] = useState({
     name: '',
     amount: ''
@@ -13,6 +16,32 @@ export default function Donations() {
   const [flashType, setFlashType] = useState('success');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
+  const [showThankYou, setShowThankYou] = useState(false);
+  const [transactionType, setTransactionType] = useState(null);
+  const [donorName, setDonorName] = useState(null);
+
+  // Detectar si venimos de un pago exitoso
+  useEffect(() => {
+    const paymentSuccess = searchParams.get('payment_success');
+    const txType = searchParams.get('transaction_type');
+    const donor = searchParams.get('donor_name');
+
+    if (paymentSuccess === 'true' && txType) {
+      setTransactionType(txType);
+      setDonorName(donor);
+      setShowThankYou(true);
+
+      // Limpiar el formulario
+      setFormData({ name: '', amount: '' });
+
+      // Limpiar los parámetros de la URL sin recargar
+      const newSearchParams = new URLSearchParams(searchParams);
+      newSearchParams.delete('payment_success');
+      newSearchParams.delete('transaction_type');
+      newSearchParams.delete('donor_name');
+      setSearchParams(newSearchParams, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -63,12 +92,20 @@ export default function Donations() {
         throw new Error('El monto debe ser mayor a 0');
       }
 
-      console.log('Enviando donación al checkout:', { amount });
+      // Obtener nombre del donante (si fue proporcionado)
+      const donorName = formData.name.trim() || null;
+      const anonymousName = language === 'es' ? 'Anónimo' : 'Anonymous';
+      const isAnonymous = !donorName || donorName === anonymousName;
+
+      console.log('Enviando donación al checkout:', { amount, donorName: isAnonymous ? null : donorName });
 
       // Enviar donación al endpoint de checkout
       const response = await apiFetch('/api/checkout/donation', {
         method: 'POST',
-        body: JSON.stringify({ amount }),
+        body: JSON.stringify({ 
+          amount,
+          donorName: isAnonymous ? null : donorName 
+        }),
       });
 
       console.log('Respuesta del checkout:', response);
@@ -92,6 +129,18 @@ export default function Donations() {
 
   return (
     <div className="w-full max-w-md md:max-w-2xl lg:max-w-3xl mx-auto space-y-6 px-4 md:px-6">
+      {/* Banner de agradecimiento */}
+      {showThankYou && (
+        <ThankYouBanner
+          transactionType={transactionType}
+          donorName={donorName}
+          onClose={() => setShowThankYou(false)}
+        />
+      )}
+
+      {/* Espaciador para el banner fijo (header + banner) */}
+      {showThankYou && <div className="h-32"></div>}
+
       <div className="text-center">
         <h1 className="text-2xl sm:text-3xl font-bold text-amber-900 mb-2">
           {translate('donations_title')}

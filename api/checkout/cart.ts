@@ -51,12 +51,18 @@ export default async function handler(req: any, res: any) {
     // Identificar tipo de transacción
     const transaction_type = "store_purchase";
 
+    // Construir success_url con parámetros - redirigir de vuelta al carrito
+    const successParams = new URLSearchParams({
+      transaction_type: transaction_type,
+      payment_success: 'true',
+    });
+
     // Crear sesión de Stripe en modo payment
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "payment",
       line_items: line_items,
-      success_url: `${req.headers.origin}/success`,
+      success_url: `${req.headers.origin}/cart?${successParams.toString()}`,
       cancel_url: `${req.headers.origin}/cart`,
       metadata: {
         transaction_type: transaction_type,

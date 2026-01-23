@@ -12,6 +12,7 @@ import ProductStory from './pages/ProductStory';
 import Cart from './pages/Cart';
 import Podcast from './pages/Podcast';
 import Projects from './pages/Projects';
+import Success from './pages/Success';
 import AdminLogin from './pages/AdminLogin';
 import AdminPanel from './pages/AdminPanel';
 import './App.css';
@@ -37,6 +38,7 @@ function App() {
                         <Route path="/cart" element={<Cart />} />
                         <Route path="/podcast" element={<Podcast />} />
                         <Route path="/projects" element={<Projects />} />
+                        <Route path="/success" element={<Success />} />
                         {/* Ruta catch-all: redirigir cualquier ruta no reconocida a home */}
                         <Route path="*" element={<Navigate to="/" replace />} />
                       </Routes>

@@ -47,6 +47,15 @@ export const TRANSLATIONS = {
     error_amount_zero: 'El monto debe ser mayor a cero.',
     error_amount_minimum: 'El monto mínimo es $1.00 USD.',
     error_donation_processing: 'Ocurrió un error al procesar tu donación. Por favor intenta nuevamente.',
+    // Success page
+    success_payment_processed: 'Tu pago ha sido procesado exitosamente.',
+    success_thank_you_purchase: '¡Gracias por tu compra!',
+    success_thank_you_donation_named: '¡Gracias {name} por tu generosa donación!',
+    success_thank_you_donation_anonymous: '¡Gracias, donante anónimo, por tu generosa donación!',
+    success_thank_you_generic: '¡Gracias por tu apoyo!',
+    success_return_home: 'Volver al Inicio',
+    success_continue_shopping: 'Continuar Comprando',
+    success_loading: 'Cargando...',
     // Store page
     store_title: 'Tienda con Valor Social',
     store_subtitle: 'Cada producto que compras apoya directamente a las comunidades cafetaleras y nuestros proyectos de desarrollo comunitario.',
@@ -172,9 +181,11 @@ export const TRANSLATIONS = {
     admin_tab_projects: 'Proyectos',
     admin_tab_products: 'Productos',
     admin_tab_podcast: 'Podcast',
+    admin_tab_transactions: 'Transacciones',
     admin_projects_title: 'Gestión de Proyectos',
     admin_products_title: 'Gestión de Productos',
     admin_podcast_title: 'Gestión de Episodios',
+    admin_transactions_title: 'Historial de Transacciones',
   },
   en: {
     // Home page
@@ -225,6 +236,15 @@ export const TRANSLATIONS = {
     error_donation_processing: 'An error occurred while processing your donation. Please try again.',
     donation_success_anonymous: 'Thank you! Your anonymous donation of ${amount} USD has been successfully registered.',
     donation_success_named: 'Thank you {name}! Your donation of ${amount} USD has been successfully registered.',
+    // Success page
+    success_payment_processed: 'Your payment has been processed successfully.',
+    success_thank_you_purchase: 'Thank you for your purchase!',
+    success_thank_you_donation_named: 'Thank you {name} for your generous donation!',
+    success_thank_you_donation_anonymous: 'Thank you, anonymous donor, for your generous donation!',
+    success_thank_you_generic: 'Thank you for your support!',
+    success_return_home: 'Return to Home',
+    success_continue_shopping: 'Continue Shopping',
+    success_loading: 'Loading...',
     // Store page
     store_title: 'Store with Social Value',
     store_subtitle: 'Every product you buy directly supports coffee-growing communities and our community development projects.',
@@ -350,6 +370,8 @@ export const TRANSLATIONS = {
     admin_tab_projects: 'Projects',
     admin_tab_products: 'Products',
     admin_tab_podcast: 'Podcast',
+    admin_tab_transactions: 'Transactions',
+    admin_transactions_title: 'Transaction History',
     admin_projects_title: 'Project Management',
     admin_products_title: 'Product Management',
     admin_podcast_title: 'Episode Management',

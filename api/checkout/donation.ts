@@ -11,7 +11,7 @@ export default async function handler(req: any, res: any) {
 
   try {
     // Leer el body
-    const { amount } = req.body;
+    const { amount, donorName } = req.body;
 
     // Validar monto
     if (!amount || amount <= 0) {
@@ -20,6 +20,17 @@ export default async function handler(req: any, res: any) {
 
     // Identificar tipo de transacción
     const transaction_type = "donation";
+    
+    // Construir success_url con parámetros - redirigir de vuelta a donaciones
+    const successParams = new URLSearchParams({
+      transaction_type: transaction_type,
+      payment_success: 'true',
+    });
+    
+    // Agregar nombre del donante si fue proporcionado
+    if (donorName && donorName.trim() && donorName.trim().toLowerCase() !== 'anónimo' && donorName.trim().toLowerCase() !== 'anonymous') {
+      successParams.append('donor_name', donorName.trim());
+    }
 
     // Crear sesión de Stripe
     const session = await stripe.checkout.sessions.create({
@@ -37,10 +48,11 @@ export default async function handler(req: any, res: any) {
           quantity: 1,
         },
       ],
-      success_url: `${req.headers.origin}/success`,
-      cancel_url: `${req.headers.origin}/cancel`,
+      success_url: `${req.headers.origin}/donate?${successParams.toString()}`,
+      cancel_url: `${req.headers.origin}/donate`,
       metadata: {
         transaction_type: transaction_type,
+        donor_name: donorName || 'anonymous',
       },
     });
 
