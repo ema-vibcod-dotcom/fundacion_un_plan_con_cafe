@@ -58,6 +58,8 @@ export const TRANSLATIONS = {
     store_purchase_thanks: '¡Gracias por tu interés en',
     store_purchase_price: 'Precio',
     store_purchase_simulation: 'Esta es una simulación. El sistema de compras real estará disponible próximamente.',
+    store_coming_soon_title: 'Próximamente',
+    store_coming_soon_message: 'Estamos preparando nuestra tienda con valor social. Pronto podrás encontrar café, artesanías y productos que apoyan directamente a las comunidades que acompañamos. Gracias por tu paciencia y por apoyar nuestra causa.',
     // Learn page
     learn_title: 'Aprende Inglés',
     learn_subtitle: 'Accede a nuestras lecciones gratuitas de inglés diseñadas especialmente para comunidades cafetaleras en Colombia. Aprende inglés de manera práctica y contextualizada.',
@@ -100,6 +102,9 @@ export const TRANSLATIONS = {
     podcast_stories_desc: 'Testimonios de comunidades',
     podcast_free: 'Gratis y accesible',
     podcast_free_desc: 'Escucha cuando quieras',
+    podcast_page_title: 'Un Plan con Café',
+    podcast_coming_soon_title: 'Próximamente',
+    podcast_coming_soon_message: 'Estamos preparando los próximos episodios de Un Plan con Café. Muy pronto podrás escuchar las voces de las escuelas rurales y de bajos ingresos en Colombia y las historias de los niños y las familias que transformamos juntos. Gracias por tu paciencia y por acompañarnos.',
     // Projects page
     projects_title: 'Proyectos',
     projects_subtitle: 'Conoce los proyectos que estamos desarrollando para transformar la educación rural en Colombia.',
@@ -221,6 +226,8 @@ export const TRANSLATIONS = {
     store_purchase_thanks: 'Thank you for your interest in',
     store_purchase_price: 'Price',
     store_purchase_simulation: 'This is a simulation. The real purchase system will be available soon.',
+    store_coming_soon_title: 'Coming soon',
+    store_coming_soon_message: "We're preparing our store with social value. Soon you'll find coffee, crafts, and products that directly support the communities we work with. Thank you for your patience and for supporting our cause.",
     // Learn page
     learn_title: 'Learn English',
     learn_subtitle: 'Access our free English lessons designed especially for coffee-growing communities in Colombia. Learn English in a practical and contextualized way.',
@@ -263,6 +270,9 @@ export const TRANSLATIONS = {
     podcast_stories_desc: 'Community testimonials',
     podcast_free: 'Free and accessible',
     podcast_free_desc: 'Listen whenever you want',
+    podcast_page_title: 'Un Plan con Café',
+    podcast_coming_soon_title: 'Coming soon',
+    podcast_coming_soon_message: "We're preparing the next episodes of Un Plan con Café. Very soon you'll be able to listen to the voices from rural and low-income schools in Colombia and the stories of the children and families we transform together. Thank you for your patience and for being with us.",
     // Projects page
     projects_title: 'Projects',
     projects_subtitle: 'Learn about the projects we are developing to transform rural education in Colombia.',
