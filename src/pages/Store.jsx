@@ -2,16 +2,12 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { getProductosDisponibles } from '../services/productoService';
-import VideoPlayer from '../components/VideoPlayer';
-import VideoModal from '../components/VideoModal';
 
 export default function Store() {
   const { translate } = useLanguage();
   const navigate = useNavigate();
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showVideoModal, setShowVideoModal] = useState(false);
-  const [selectedVideo, setSelectedVideo] = useState(null);
 
   useEffect(() => {
     loadProductos();
@@ -192,19 +188,6 @@ export default function Store() {
             );
           })}
         </div>
-      )}
-
-      {/* Modal de video */}
-      {selectedVideo && (
-        <VideoModal
-          isOpen={showVideoModal}
-          onClose={() => {
-            setShowVideoModal(false);
-            setSelectedVideo(null);
-          }}
-          videoUrl={selectedVideo.url}
-          title={selectedVideo.title}
-        />
       )}
     </div>
   );

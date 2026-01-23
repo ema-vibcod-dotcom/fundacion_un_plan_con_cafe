@@ -19,6 +19,8 @@ export default function Projects() {
     try {
       setLoading(true);
       const response = await getProyectos({ sort: 'fechaInicio:desc' });
+      console.log('Proyectos cargados:', response.data);
+      console.log('Número de proyectos:', response.data?.length || 0);
       setProyectos(response.data || []);
     } catch (error) {
       console.error('Error cargando proyectos:', error);
@@ -92,6 +94,7 @@ export default function Projects() {
         proyectos.map((proyecto) => {
           const imageUrl = getProjectImage(proyecto);
           const videoUrl = proyecto.attributes.videoUrl || proyecto.attributes.video_url || proyecto.attributes.videoCorto?.url || proyecto.attributes.video_corto;
+          console.log(`Proyecto: ${proyecto.attributes.titulo}, Video URL:`, videoUrl);
           const estadoColors = {
             en_curso: 'bg-blue-100 text-blue-800',
             completado: 'bg-green-100 text-green-800',
@@ -139,9 +142,11 @@ export default function Projects() {
                     <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-amber-900 text-center sm:text-left">
                       {proyecto.attributes.titulo}
                     </h2>
-                    <span className={`px-2 py-1 text-xs rounded ${estadoColors[proyecto.attributes.estado] || estadoColors.en_curso}`}>
-                      {proyecto.attributes.estado?.replace('_', ' ')}
-                    </span>
+                    {proyecto.attributes.estado && (
+                      <span className={`px-2 py-1 text-xs rounded ${estadoColors[proyecto.attributes.estado] || estadoColors.en_curso}`}>
+                        {proyecto.attributes.estado.replace('_', ' ')}
+                      </span>
+                    )}
                   </div>
                   <p className="text-gray-700 leading-relaxed text-sm md:text-base mb-4 whitespace-pre-line">
                     {proyecto.attributes.descripcion}

@@ -61,8 +61,8 @@ export default function AdminProjects() {
       const supabaseData = {
         titulo: projectData.titulo,
         descripcion: projectData.descripcion,
-        estado: projectData.estado,
-        fecha_inicio: projectData.fechaInicio,
+        estado: projectData.estado || null, // Permitir NULL
+        fecha_inicio: projectData.fechaInicio || null, // Permitir NULL
         fecha_finalizacion: projectData.fechaFinalizacion || null,
         galeria_imagenes: projectData.galeriaImagenes || [],
         video_corto: projectData.videoCorto || null,
@@ -298,9 +298,11 @@ function ProjectCard({ proyecto, onEdit, onDelete }) {
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-2 flex-wrap">
               <h3 className="text-lg font-semibold text-amber-900">{attributes.titulo}</h3>
-              <span className={`px-2 py-1 text-xs rounded ${estadoColors[attributes.estado] || estadoColors.en_curso}`}>
-                {attributes.estado?.replace('_', ' ') || 'en_curso'}
-              </span>
+              {attributes.estado && (
+                <span className={`px-2 py-1 text-xs rounded ${estadoColors[attributes.estado] || estadoColors.en_curso}`}>
+                  {attributes.estado.replace('_', ' ')}
+                </span>
+              )}
             </div>
             <p className="text-gray-600 text-sm mb-2 line-clamp-3">
               {attributes.descripcion || 'Sin descripción'}
@@ -345,7 +347,7 @@ function ProjectForm({ project, onSave, onCancel }) {
   const [formData, setFormData] = useState({
     titulo: project?.attributes?.titulo || '',
     descripcion: project?.attributes?.descripcion || '',
-    estado: project?.attributes?.estado || 'en_curso',
+    estado: project?.attributes?.estado || '',
     fechaInicio: project?.attributes?.fechaInicio || '',
     fechaFinalizacion: project?.attributes?.fechaFinalizacion || '',
     voluntarios: project?.attributes?.voluntarios || 0,
@@ -394,12 +396,15 @@ function ProjectForm({ project, onSave, onCancel }) {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Estado</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Estado <span className="text-gray-400 text-xs">(opcional)</span>
+          </label>
           <select
             value={formData.estado}
             onChange={(e) => setFormData({ ...formData, estado: e.target.value })}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none"
           >
+            <option value="">Sin estado</option>
             <option value="en_curso">En Curso</option>
             <option value="completado">Completado</option>
             <option value="urgente">Urgente</option>
@@ -407,17 +412,20 @@ function ProjectForm({ project, onSave, onCancel }) {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Fecha de Inicio</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Fecha de Inicio <span className="text-gray-400 text-xs">(opcional)</span>
+            </label>
             <input
               type="date"
               value={formData.fechaInicio}
               onChange={(e) => setFormData({ ...formData, fechaInicio: e.target.value })}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none"
-              required
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Fecha de Finalización</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Fecha de Finalización <span className="text-gray-400 text-xs">(opcional)</span>
+            </label>
             <input
               type="date"
               value={formData.fechaFinalizacion}

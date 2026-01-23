@@ -27,8 +27,8 @@ export async function getProyectos(params = {}) {
     }
     
     // Formatear para compatibilidad con estructura Strapi
-    return {
-      data: proyectos.map(proyecto => ({
+    const formattedProyectos = proyectos.map(proyecto => {
+      const formatted = {
         id: proyecto.id,
         attributes: {
           titulo: proyecto.titulo,
@@ -47,7 +47,17 @@ export async function getProyectos(params = {}) {
           porcentajeFinanciado: proyecto.porcentaje_financiado,
           socios: proyecto.socios,
         },
-      })),
+      };
+      console.log(`Formateando proyecto ${proyecto.id}:`, {
+        titulo: proyecto.titulo,
+        video_url: proyecto.video_url,
+        videoUrl: formatted.attributes.videoUrl,
+      });
+      return formatted;
+    });
+    
+    return {
+      data: formattedProyectos,
     };
   } catch (error) {
     console.error('Error obteniendo proyectos:', error);
