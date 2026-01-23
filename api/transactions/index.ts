@@ -46,6 +46,10 @@ export default async function handler(req: any, res: any) {
       const amountTotal = session.amount_total || 0;
       const amountInDollars = amountTotal / 100;
 
+      // Identificar si es transacción de prueba o real
+      // livemode: false = prueba (test mode), true = real (live mode)
+      const isTestMode = !session.livemode;
+
       return {
         id: session.id,
         transaction_type: transactionType,
@@ -54,6 +58,8 @@ export default async function handler(req: any, res: any) {
         currency: session.currency?.toUpperCase() || "USD",
         date: new Date(session.created * 1000).toISOString(),
         payment_status: session.payment_status,
+        is_test: isTestMode, // true = prueba, false = real
+        livemode: session.livemode, // Mantener el valor original también
       };
     });
 
