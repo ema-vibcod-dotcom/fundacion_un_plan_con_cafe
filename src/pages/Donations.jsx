@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import FlashMessage from '../components/FlashMessage';
-import { saveDonation } from '../services/donationService';
 import { useLanguage } from '../contexts/LanguageContext';
+import { apiFetch } from '../services/apiConfig';
 
 export default function Donations() {
   const { translate, language } = useLanguage();
@@ -12,6 +12,7 @@ export default function Donations() {
   const [flashMessage, setFlashMessage] = useState(null);
   const [flashType, setFlashType] = useState('success');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -44,6 +45,7 @@ export default function Donations() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setFlashMessage(null);
+    setError(null);
 
     const validationErrors = validateForm();
     if (validationErrors.length > 0) {
@@ -55,25 +57,35 @@ export default function Donations() {
     setIsSubmitting(true);
 
     try {
-      const anonymousName = language === 'es' ? 'Anónimo' : 'Anonymous';
-      
-      const result = await saveDonation({
-        name: formData.name.trim() || anonymousName,
-        amount_usd: parseFloat(formData.amount)
-      }, translate);
+      const amount = parseFloat(formData.amount);
 
-      if (result.success) {
-        setFlashMessage(result.message);
-        setFlashType('success');
-        setFormData({
-          name: '',
-          amount: ''
-        });
+      if (!amount || amount <= 0) {
+        throw new Error('El monto debe ser mayor a 0');
+      }
+
+      console.log('Enviando donación al checkout:', { amount });
+
+      // Enviar donación al endpoint de checkout
+      const response = await apiFetch('/api/checkout/donation', {
+        method: 'POST',
+        body: JSON.stringify({ amount }),
+      });
+
+      console.log('Respuesta del checkout:', response);
+
+      // Si la respuesta tiene una URL, redirigir a Stripe Checkout
+      if (response && response.url) {
+        console.log('Redirigiendo a Stripe:', response.url);
+        window.location.href = response.url;
+      } else {
+        console.error('Respuesta sin URL:', response);
+        throw new Error('No se recibió la URL de checkout');
       }
     } catch (error) {
-      setFlashMessage(translate('error_donation_processing'));
+      console.error('Error en checkout de donación:', error);
+      setError(error.message || translate('error_donation_processing'));
       setFlashType('error');
-    } finally {
+      setFlashMessage(error.message || translate('error_donation_processing'));
       setIsSubmitting(false);
     }
   };
@@ -169,6 +181,12 @@ export default function Donations() {
             </div>
           </div>
         </div>
+
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+            {error}
+          </div>
+        )}
 
         <button
           type="submit"
