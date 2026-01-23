@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useCart } from '../contexts/CartContext';
+import { apiFetch } from '../services/apiConfig';
 
 export default function Cart() {
   const { translate } = useLanguage();
@@ -14,12 +16,49 @@ export default function Cart() {
     getTotalItems,
   } = useCart();
 
-  const handleCheckout = () => {
-    // Aquí se integraría con Stripe
-    // Por ahora, redirigimos a la página de donaciones que ya existe
-    // TODO: Implementar integración con Stripe
-    alert('Funcionalidad de checkout con Stripe pendiente de implementar');
-    // navigate('/checkout');
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleCheckout = async () => {
+    if (cartItems.length === 0) {
+      setError('El carrito está vacío');
+      return;
+    }
+
+    setIsProcessing(true);
+    setError(null);
+
+    try {
+      // Convertir items del carrito al formato que espera el API
+      const items = cartItems.map((item) => {
+        const name = item.attributes?.nombre || item.nombre || 'Producto';
+        const price = item.attributes?.precio || item.precio || 0;
+        const quantity = item.quantity || 1;
+
+        return {
+          name,
+          price,
+          quantity,
+        };
+      });
+
+      // Enviar items al endpoint de checkout
+      const response = await apiFetch('/api/checkout/cart', {
+        method: 'POST',
+        body: JSON.stringify({ items }),
+      });
+
+      // Si la respuesta tiene una URL, redirigir a Stripe Checkout
+      if (response.url) {
+        window.location.href = response.url;
+      } else {
+        throw new Error('No se recibió la URL de checkout');
+      }
+    } catch (error) {
+      console.error('Error en checkout:', error);
+      setError(error.message || 'Error al procesar el checkout. Por favor intenta de nuevo.');
+      setIsProcessing(false);
+    }
   };
 
   // Obtener imagen del producto
@@ -198,11 +237,18 @@ export default function Cart() {
               </div>
             </div>
 
+            {error && (
+              <div className="mb-3 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">
+                {error}
+              </div>
+            )}
+
             <button
               onClick={handleCheckout}
-              className="w-full px-6 py-3 bg-amber-900 text-white rounded-lg font-semibold hover:bg-amber-800 transition mb-3"
+              disabled={isProcessing || cartItems.length === 0}
+              className="w-full px-6 py-3 bg-amber-900 text-white rounded-lg font-semibold hover:bg-amber-800 transition mb-3 disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:bg-gray-400"
             >
-              Proceder al Checkout
+              {isProcessing ? 'Procesando...' : 'Proceder al Checkout'}
             </button>
 
             <p className="text-xs text-gray-500 text-center">
