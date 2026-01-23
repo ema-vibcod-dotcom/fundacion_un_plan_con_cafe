@@ -115,20 +115,6 @@ export default function Store() {
                   </div>
                 )}
 
-                {/* Video del producto - solo mostrar si hay video */}
-                {(producto.attributes.videoUrl || producto.attributes.video_url) && (
-                  <div className="px-4 pt-4">
-                    <VideoPlayer 
-                      videoUrl={producto.attributes.videoUrl || producto.attributes.video_url} 
-                      title={`Video de ${producto.attributes.nombre}`}
-                      onVideoClick={(url, title) => {
-                        setSelectedVideo({ url, title });
-                        setShowVideoModal(true);
-                      }}
-                    />
-                  </div>
-                )}
-
                 <div className="p-4">
                   {/* Nombre */}
                   <h3 className="text-lg font-bold text-amber-900 mb-2">

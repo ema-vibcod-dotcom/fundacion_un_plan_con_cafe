@@ -1,34 +1,38 @@
 import { Component } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
 
 class ErrorBoundaryClass extends Component {
   constructor(props) {
     super(props);
-    this.state = { hasError: false };
+    this.state = { hasError: false, error: null };
   }
 
   static getDerivedStateFromError(error) {
-    return { hasError: true };
+    return { hasError: true, error };
   }
 
   componentDidCatch(error, errorInfo) {
     console.error('Error capturado por ErrorBoundary:', error, errorInfo);
-    // Redirigir a home en caso de error
-    if (this.props.onRedirect) {
-      this.props.onRedirect('/');
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    // Redirigir cuando se detecta un error
+    if (this.state.hasError && !prevState.hasError && this.props.onRedirect) {
+      // Usar setTimeout para asegurar que la redirección ocurra después del render
+      setTimeout(() => {
+        this.props.onRedirect('/');
+      }, 100);
     }
   }
 
   render() {
     if (this.state.hasError) {
-      return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50">
-          <div className="text-center">
-            <p className="text-amber-900 mb-4">Redirigiendo a la página principal...</p>
-          </div>
-        </div>
-      );
+      // Redirigir inmediatamente sin mostrar mensaje
+      if (this.props.onRedirect) {
+        this.props.onRedirect('/');
+      }
+      // Retornar null mientras redirige
+      return null;
     }
 
     return this.props.children;
