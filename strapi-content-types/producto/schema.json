@@ -1,0 +1,85 @@
+{
+  "kind": "collectionType",
+  "collectionName": "productos",
+  "info": {
+    "singularName": "producto",
+    "pluralName": "productos",
+    "displayName": "Producto",
+    "description": "Productos de la tienda solidaria"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "nombre": {
+      "type": "string",
+      "required": true,
+      "maxLength": 255
+    },
+    "precio": {
+      "type": "decimal",
+      "required": true,
+      "min": 0
+    },
+    "stock": {
+      "type": "integer",
+      "required": true,
+      "default": 0,
+      "min": 0
+    },
+    "estado": {
+      "type": "enumeration",
+      "enum": [
+        "disponible",
+        "agotado"
+      ],
+      "default": "disponible",
+      "required": true
+    },
+    "activo": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    },
+    "galeriaImagenes": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "videoCreador": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["videos"]
+    },
+    "historiaCreador": {
+      "type": "richtext",
+      "required": true
+    },
+    "nombreCreador": {
+      "type": "string",
+      "required": true,
+      "maxLength": 255
+    },
+    "categoria": {
+      "type": "enumeration",
+      "enum": [
+        "cafe",
+        "artesanias",
+        "otros"
+      ],
+      "default": "otros"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "nombre",
+      "required": true
+    },
+    "descripcionCorta": {
+      "type": "text",
+      "maxLength": 500
+    }
+  }
+}

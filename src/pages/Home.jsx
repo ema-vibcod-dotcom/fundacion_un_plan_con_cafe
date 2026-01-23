@@ -1,12 +1,65 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useAdminAuth } from '../contexts/AdminAuthContext';
+import AdminLoginModal from '../components/AdminLoginModal';
 import logoFundacion from '../assets/logo-fundacion.png';
 
 export default function Home() {
   const { translate } = useLanguage();
+  const { isAuthenticated } = useAdminAuth();
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  const handleAdminClick = () => {
+    if (isAuthenticated) {
+      // Si ya está autenticado, redirigir directamente al panel de Strapi
+      const strapiUrl = import.meta.env.VITE_STRAPI_API_URL || 'http://localhost:1337';
+      window.open(`${strapiUrl}/admin`, '_blank');
+    } else {
+      // Si no está autenticado, mostrar modal de login
+      setShowLoginModal(true);
+    }
+  };
+
+  const handleLoginSuccess = () => {
+    // Después del login exitoso, redirigir al panel de Strapi
+    const strapiUrl = import.meta.env.VITE_STRAPI_API_URL || 'http://localhost:1337';
+    window.open(`${strapiUrl}/admin`, '_blank');
+  };
 
   return (
     <div className="w-full max-w-md md:max-w-2xl lg:max-w-3xl mx-auto space-y-6 px-4 md:px-6">
+      {/* Botón de Admin - Pequeño en la esquina */}
+      <div className="fixed bottom-20 right-4 z-40">
+        <button
+          onClick={handleAdminClick}
+          className="bg-amber-900 text-white p-2 rounded-full shadow-lg hover:bg-amber-800 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
+          title="Acceso de Administrador"
+          aria-label="Acceso de Administrador"
+        >
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+            />
+          </svg>
+        </button>
+      </div>
+
+      {/* Modal de Login */}
+      <AdminLoginModal
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+        onSuccess={handleLoginSuccess}
+      />
+
       {/* Logo Section */}
       <div className="flex justify-center py-2">
         <img 
