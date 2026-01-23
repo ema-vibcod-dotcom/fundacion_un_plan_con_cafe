@@ -49,7 +49,7 @@ export default function VideoModal({ isOpen, onClose, videoUrl, title }) {
           </button>
         </div>
 
-        {/* Video Content */}
+        {/* Video Content - Embed completo */}
         <div className="p-4 bg-gray-50">
           <VideoPlayer videoUrl={videoUrl} title={title} />
         </div>

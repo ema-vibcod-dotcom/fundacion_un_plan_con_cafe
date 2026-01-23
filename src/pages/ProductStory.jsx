@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useCart } from '../contexts/CartContext';
 import { getProductoById } from '../services/productoService';
-import VideoPlayer from '../components/VideoPlayer';
+import VideoPreview from '../components/VideoPreview';
 import VideoModal from '../components/VideoModal';
 
 export default function ProductStory() {
@@ -119,17 +119,17 @@ export default function ProductStory() {
               className="w-full h-full object-cover"
               loading="lazy"
             />
-            {videoUrl && (
-              <button
-                onClick={() => setShowVideoModal(true)}
-                className="absolute bottom-4 right-4 bg-amber-900 text-white px-4 py-2 rounded-lg hover:bg-amber-800 transition flex items-center gap-2 shadow-lg"
-              >
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-                Ver Video
-              </button>
-            )}
+          </div>
+        )}
+
+        {/* Preview del video - debajo de la imagen o en lugar de ella */}
+        {videoUrl && (
+          <div className={imageUrl ? "px-6 md:px-8 pt-6" : ""}>
+            <VideoPreview
+              videoUrl={videoUrl}
+              title={`Video de ${attributes.nombre}`}
+              onPlayClick={() => setShowVideoModal(true)}
+            />
           </div>
         )}
 
@@ -190,17 +190,15 @@ export default function ProductStory() {
             </div>
           )}
 
-          {/* Video inline (opcional, más pequeño) */}
+          {/* Preview del video (opcional, debajo de la descripción) */}
           {videoUrl && (
             <div>
-              <h2 className="text-xl font-semibold text-amber-900 mb-2">Video del Producto</h2>
+              <h2 className="text-xl font-semibold text-amber-900 mb-4">Video del Producto</h2>
               <div className="border border-gray-200 rounded-lg overflow-hidden">
-                <VideoPlayer
+                <VideoPreview
                   videoUrl={videoUrl}
                   title={`Video de ${attributes.nombre}`}
-                  onVideoClick={(url, title) => {
-                    setShowVideoModal(true);
-                  }}
+                  onPlayClick={() => setShowVideoModal(true)}
                 />
               </div>
             </div>
